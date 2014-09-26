@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent" android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/month_of_post_tv"
+        android:text="L"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="8dp"
+        android:textSize="18sp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:id="@+id/day_of_post_tv"
+        android:layout_below="@id/month_of_post_tv"
+        android:text="99th"
+        android:textSize="25sp"
+        android:layout_marginLeft="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="fill_parent" />
+
+    <TextView
+        android:id="@+id/title_of_post_tv"
+        android:textSize="30sp"
+        android:layout_marginTop="10dp"
+        android:layout_marginLeft="40dp"
+        android:text="POPPY"
+        android:layout_toRightOf="@id/day_of_post_tv"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <!-- TODO: hook logic in for challenge recognition -->
+    <TextView
+        android:id="@+id/challengeUnlocked_tv"
+        android:textColor="#66A3C2"
+        android:visibility="invisible"
+        android:text="CHALLENGE UNLOCKED!"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/day_of_post_tv"
+        android:layout_below="@id/title_of_post_tv"
+        android:layout_marginLeft="70dp"
+        android:textSize="19sp" />
+
+    <ImageView
+        android:id="@+id/star_iv"
+        android:src="@drawable/postchallenge_marker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:visibility="invisible"
+        android:layout_marginLeft="25dp"
+        android:scaleX="0.8"
+        android:scaleY="0.8"
+        android:layout_alignBottom="@id/challengeUnlocked_tv"
+        android:layout_toRightOf="@id/day_of_post_tv"
+        android:layout_below="@id/title_of_post_tv"/>
+
+</RelativeLayout>

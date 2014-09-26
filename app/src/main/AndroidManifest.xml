@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="scribit.sjbodzo.com.scribit" >
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/ic_launcher"
+        android:label="@string/app_name"
+        android:theme="@style/AppTheme" >
+        <activity android:name="com.facebook.LoginActivity" />
+
+        <meta-data
+            android:name="com.facebook.sdk.ApplicationId"
+            android:value="@string/app_id" />
+
+        <activity
+            android:name=".LoginActivity"
+            android:label="@string/app_name" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".Home"
+            android:label="@string/title_activity_home" >
+        </activity>
+        <activity
+            android:name=".JournalEntries"
+            android:label="@string/title_activity_journal_entries" >
+        </activity>
+        <activity
+            android:name=".AddEntryWizard"
+            android:label="@string/title_activity_add_entry_wizard" >
+        </activity>
+        <activity
+            android:name=".ChallengeTrackerActivity"
+            android:label="@string/title_activity_challenge_tracker" >
+        </activity>
+        <activity
+            android:name=".EditPost"
+            android:label="@string/title_activity_view_post" >
+        </activity>
+        <activity
+            android:name=".SettingsActivity"
+            android:label="SettingsActivity" >
+        </activity>
+    </application>
+
+</manifest>

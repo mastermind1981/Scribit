@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Scribit</string>
+    <string name="hello_world">Hello world!</string>
+    <string name="action_settings">Settings</string>
+    <string name="app_id">1591092607784478</string>
+    <string name="title_activity_home">Home</string>
+    <string name="title_activity_journal_entries">JournalEntries</string>
+    <string name="title_activity_add_entry_wizard">AddEntryWizard</string>
+    <string name="title_activity_challenge_tracker">ChallengeTracker</string>
+    <string name="title_activity_view_post">ViewPost</string>
+    <string name="title_activity_avatar_preference">AvatarPreference</string>
+
+</resources>

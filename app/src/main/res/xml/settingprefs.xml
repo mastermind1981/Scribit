@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+    <PreferenceCategory
+        android:title="Account"
+        android:key="pref_key_acct_settings">
+        <CheckBoxPreference
+            android:id="@+id/firsttimer"
+            android:visibility="gone"
+            android:key="pref_key_virginal_ux"
+            android:summary="Toggle for first time user of the application."
+            android:title="1st time user?"
+            android:defaultValue="true" />
+        <EditTextPreference
+            android:key="pref_key_username"
+            android:summary="Your username within the app"
+            android:title="Username"
+            android:defaultValue="false"
+            android:clickable="false"
+            android:editable="false" />
+        <ListPreference
+            android:key="pref_key_titlename"
+            android:summary="Select your title from unlocked challenge rewards!"
+            android:title="Title"
+            android:defaultValue="the Novice"
+            android:dialogTitle="Choose from your unlocked titles below"
+            android:dialogMessage="To choose more titles, complete more challenges"
+            android:entries="@array/titles_unlocked_entries"
+            android:entryValues="@array/titles_unlocked_vals" />
+            <!-- TODO: fix list entries/entryValues-->
+        <scribit.sjbodzo.com.scribit.AvatarPreference
+            android:id="@+id/av_pref_ref"
+            android:title="Avatar"
+            android:key="pref_key_avatar" />
+        </PreferenceCategory>
+
+        <PreferenceCategory
+            android:title="Data Privacy"
+            android:key="pref_key_data_privacy">
+        <Preference
+            android:key="pref_key_delete_all"
+            android:summary="Permanently delete all entries in journal. This is NOT reversible. Unlocked titles are preserved."
+            android:title="Delete All" />
+        <CheckBoxPreference
+            android:key="pref_key_toggle_exif"
+            android:summary="Choose whether or not to allow the app to grab information from photos, such as location and timestamps."
+            android:title="Use EXIF" />
+    </PreferenceCategory>
+</PreferenceScreen>
