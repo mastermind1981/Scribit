@@ -2,6 +2,7 @@ package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
@@ -31,6 +32,9 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settingprefs);
 
+        SharedPreferences spRef = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
+        boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);
+
         //make check for 1st time users invisible in settings menu
         PreferenceCategory pfc = (PreferenceCategory) findPreference("pref_key_acct_settings");
         CheckBoxPreference cbp = (CheckBoxPreference) findPreference("pref_key_virginal_ux");
@@ -42,7 +46,7 @@ public class SettingsActivity extends PreferenceActivity {
         LayoutInflater lif = getLayoutInflater();
         View v = lif.inflate(avp.getLayoutResource(), null);
         avIV = (ImageView) findViewById(R.id.av_pref_ref);
-        fetchIVContent(avIV);
+        //fetchIVContent(avIV);
 
         Preference.OnPreferenceClickListener pOpCL = new Preference.OnPreferenceClickListener() {
             @Override

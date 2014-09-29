@@ -50,6 +50,7 @@ public class PostsDataAccessObject {
     public Post createJournalPost(String title, String desc, double gps_x,
                                   double gps_y, String imgpath, String date) {
         //TODO: input validation before attempting write on DB (i.e: for non null fields)
+        //this includes primitives that CANNOT be null ^ 
         ContentValues values = new ContentValues();
         values.put(PostTableHelper.COLUMN_TITLE, title);
         values.put(PostTableHelper.COLUMN_DESC, desc);
@@ -78,14 +79,14 @@ public class PostsDataAccessObject {
         String desc = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_DESC));
         double locx = cursor.getDouble(cursor.getColumnIndex(PostTableHelper.COLUMN_LOC_X));
         double locy = cursor.getDouble(cursor.getColumnIndex(PostTableHelper.COLUMN_LOC_Y));
-        String imgpath = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_IMGPATH));
+        String filepath = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_IMGPATH));
         String date = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_DATE));
         Double[] locs = new Double[] {locx, locy};
 
         Date d = null; //date CANNOT stay null!
         try { d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date); }
         catch (ParseException pe) { pe.toString(); }
-        Post postyPoo = new Post(id, title, desc, locs, new File(imgpath), d);
+        Post postyPoo = new Post(id, title, desc, locs, new File(filepath), d);
 
         return postyPoo;
     }

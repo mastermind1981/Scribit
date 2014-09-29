@@ -1,0 +1,26 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="scribit.sjbodzo.com.scribit.PostLocationFragment">
+
+    <!-- TODO: Fix layout for location rich UX -->
+
+    <TextView
+        android:textSize="22sp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:layout_marginBottom="14dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:text="Yeah yeah, I'll eventually put location rich UX in here." />
+
+    <Button
+        android:id="@+id/ok_postlocfrag_button"
+        android:text="OK"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

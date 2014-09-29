@@ -30,6 +30,7 @@
             <!-- TODO: fix list entries/entryValues-->
         <scribit.sjbodzo.com.scribit.AvatarPreference
             android:id="@+id/av_pref_ref"
+            android:defaultValue="R.drawable.ic_avatar"
             android:title="Avatar"
             android:key="pref_key_avatar" />
         </PreferenceCategory>

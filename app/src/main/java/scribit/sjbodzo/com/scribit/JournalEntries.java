@@ -56,6 +56,7 @@ public class JournalEntries extends ListActivity {
         SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
         boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);
         if (isFirstTimeUser) {
+            //populate initial challenges!
             final CustomPostAdapter adapter = (CustomPostAdapter) getListAdapter();
             Post newPost = postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010");
             adapter.add(newPost);
@@ -107,6 +108,12 @@ public class JournalEntries extends ListActivity {
             startActivity(i);
             return true;
         }
+        else if (id == R.id.new_post_entry) {
+            Intent i = new Intent(getApplicationContext(), AddEntryWizard.class);
+            startActivity(i);
+            return true;
+        }
+        else {}
         return super.onOptionsItemSelected(item);
     }
 }

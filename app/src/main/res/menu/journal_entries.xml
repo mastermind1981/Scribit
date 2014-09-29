@@ -10,13 +10,13 @@
 
     <item android:id="@+id/view_toggle"
         android:title="Toggle View Style"
-        android:orderInCategory="2"
+        android:orderInCategory="10"
         android:icon="@drawable/ic_toggle_view"
         android:showAsAction="ifRoom" />
 
     <item android:id="@+id/new_post_entry"
         android:title="Post New Entry"
-        android:orderInCategory="10"
+        android:orderInCategory="1"
         android:icon="@drawable/ic_add_new_entry"
         android:showAsAction="ifRoom" />
 
