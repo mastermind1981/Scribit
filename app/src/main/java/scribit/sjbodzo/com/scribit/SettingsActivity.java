@@ -38,6 +38,7 @@ public class SettingsActivity extends PreferenceActivity {
         //make check for 1st time users invisible in settings menu
         PreferenceCategory pfc = (PreferenceCategory) findPreference("pref_key_acct_settings");
         CheckBoxPreference cbp = (CheckBoxPreference) findPreference("pref_key_virginal_ux");
+        CheckBoxPreference gpsbp = (CheckBoxPreference) findPreference("pref_key_toggle_gps");
         pfc.removePreference(cbp);
 
         //hook in onClick listener event for custom Avatar Preference obj
@@ -73,9 +74,11 @@ public class SettingsActivity extends PreferenceActivity {
                 SharedPreferences.Editor ed = spRef.edit();
                 boolean curVal = spRef.getBoolean("pref_key_toggle_gps", true);
                 ed.putBoolean("pref_key_toggle_gps", !curVal);
+                ed.apply();
                 return true;
             }
         };
+        gpsbp.setOnPreferenceClickListener(doGPSL);
     }
 
     public void fetchIVContent(ImageView iv) {
