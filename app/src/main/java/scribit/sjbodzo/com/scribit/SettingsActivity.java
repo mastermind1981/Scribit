@@ -32,7 +32,7 @@ public class SettingsActivity extends PreferenceActivity {
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.settingprefs);
 
-        SharedPreferences spRef = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
+        final SharedPreferences spRef = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
         boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);
 
         //make check for 1st time users invisible in settings menu
@@ -48,6 +48,7 @@ public class SettingsActivity extends PreferenceActivity {
         avIV = (ImageView) findViewById(R.id.av_pref_ref);
         //fetchIVContent(avIV);
 
+        //Hook listener into Avatar image on Preferences apge.
         Preference.OnPreferenceClickListener pOpCL = new Preference.OnPreferenceClickListener() {
             @Override
             public boolean onPreferenceClick(Preference p) {
@@ -64,6 +65,17 @@ public class SettingsActivity extends PreferenceActivity {
             }
         };
         avp.setOnPreferenceClickListener(pOpCL);
+
+        //Hook listener to update GPS pref accordingly
+        Preference.OnPreferenceClickListener doGPSL = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                SharedPreferences.Editor ed = spRef.edit();
+                boolean curVal = spRef.getBoolean("pref_key_toggle_gps", true);
+                ed.putBoolean("pref_key_toggle_gps", !curVal);
+                return true;
+            }
+        };
     }
 
     public void fetchIVContent(ImageView iv) {
