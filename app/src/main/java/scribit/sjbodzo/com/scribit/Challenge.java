@@ -10,7 +10,7 @@ interface Challenge {
 class ConcreteChallenge extends Post implements Challenge {
 
     public ConcreteChallenge(long id, String title, String description,
-                             Double[] location, File postimg, Date postDate) {
+                             Double[] location, String postimg, Date postDate) {
         super(id, title, description, location, postimg, postDate);
     }
 

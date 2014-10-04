@@ -13,5 +13,6 @@
     <string name="title_activity_avatar_preference">AvatarPreference</string>
     <string name="title_activity_saved_av_pref_state">SavedAvPrefState</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="title_activity_view_entry">ViewEntry</string>
 
 </resources>

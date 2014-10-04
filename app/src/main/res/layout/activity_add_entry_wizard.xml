@@ -14,6 +14,7 @@
         android:hint="Title?"
         android:textSize="21sp"
         android:layout_marginLeft="20dip"
+        android:inputType="textCapWords"
         android:gravity="fill_horizontal"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
@@ -79,6 +80,7 @@
     </LinearLayout>
 
     <EditText
+        android:id="@+id/entryDesc_et"
         android:layout_marginTop="15dip"
         android:background="#f9fcfc"
         android:hint="Input description here..."
@@ -88,6 +90,7 @@
         android:layout_gravity="fill" />
 
     <Button
+        android:id="@+id/addEntry_submit_button"
         android:text="SUBMIT"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />

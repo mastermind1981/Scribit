@@ -1,30 +1,65 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.ListActivity;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.ListView;
 
-import java.util.Date;
 import java.util.List;
-
 
 public class JournalEntries extends ListActivity {
     private PostsDataAccessObject postsTableDAO;
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
+    private ListView lv;
+    private Context self;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_journal_entries);
+        lv = getListView();
+        self = this;
         setupDAOAndCursorAdapter(); //hook app into stored DB of entries
         firstLaunchCheck(); //if this is the first app launch respond accordingly
+
+        Button addEntryButton = (Button) findViewById(R.id.add_new_entry_button);
+        addEntryButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent launchAdd = new Intent(getApplicationContext(), AddEntryWizard.class);
+                startActivity(launchAdd);
+            }
+        });
+
+        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
+                final Post item = (Post) parent.getItemAtPosition(position);
+                Log.e("ONCLICK WORKS!\t", "YUP");
+                /**view.animate().setDuration(200).translationX(140)
+                        .withEndAction(new Runnable() {
+                            @Override
+                            public void run() {
+                                //this.remove(item);
+                                //adapter.notifyDataSetChanged();
+                                Intent viewPostIntent = new Intent(self, EditPost.class);
+                                self.startActivity(viewPostIntent);
+                            }
+                        });
+                 **/
+                Intent viewPostIntent = new Intent(self, ViewEntry.class);
+                viewPostIntent.putExtra("postEntry", item);
+                self.startActivity(viewPostIntent);
+            }
+        });
 
         //TODO: animation for loading when busy grabbing list
         //TODO: write onClick
@@ -41,12 +76,6 @@ public class JournalEntries extends ListActivity {
         //hook in Cursor adapter
         //TODO: put group by functionality into call here when view flips
         List<Post> posts = postsTableDAO.getAllOfThePostyThings();
-        /**
-        Post[] posties = new Post[posts.size()];
-        for (int i = 0; i < posties.length; i++) {
-            posties[i] = posts.get(i);
-        }
-        **/
         ArrayAdapter<Post> velocidaptor = new CustomPostAdapter(this, posts);
         this.setListAdapter(velocidaptor);
     }
@@ -67,6 +96,11 @@ public class JournalEntries extends ListActivity {
             newPost = postsTableDAO.createJournalPost("Foo 4", "insane post bruh", 23.2, 99.42, "", "November 14, 2010");
             adapter.add(newPost);
             adapter.notifyDataSetChanged();
+
+            //set status to already visited
+            SharedPreferences.Editor eddy = spRef.edit();
+            eddy.putBoolean("pref_key_virginal_ux", false);
+            eddy.apply();
         }
     }
 

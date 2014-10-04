@@ -14,7 +14,7 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-public class CustomPostAdapter extends ArrayAdapter<Post> implements AdapterView.OnItemClickListener {
+public class CustomPostAdapter extends ArrayAdapter<Post> {
     private final Context context;
     private List<Post> posts;
 
@@ -42,7 +42,6 @@ public class CustomPostAdapter extends ArrayAdapter<Post> implements AdapterView
         cale.setTime(p.getDate());
         int month = cale.get(Calendar.MONTH)+1;
         int day = cale.get(Calendar.DATE);
-        Log.e("CALENDAR", "MONTH : " + month + "  DAY : " + day);
         monthTV.setText(parseDateMonth(month));
         titleTV.setText(p.getTitle());
         dayTV.setText(new Integer(day).toString());
@@ -51,25 +50,10 @@ public class CustomPostAdapter extends ArrayAdapter<Post> implements AdapterView
             chalStarIV.setVisibility(ImageView.VISIBLE);
             challTV.setVisibility(TextView.VISIBLE);
         }
-
         return rowView;
     }
 
-    public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
-        final Post item = (Post) parent.getItemAtPosition(position);
-        view.animate().setDuration(3000).alpha(0)
-                .withEndAction(new Runnable() {
-                    @Override
-                    public void run() {
-                        //this.remove(item);
-                        //adapter.notifyDataSetChanged();
-                        view.setAlpha(1);
-                        Intent viewPostIntent = new Intent(parent.getContext(), EditPost.class);
-                    }
-                });
-    }
-
-    public String parseDateMonth(int d) {
+    public static String parseDateMonth(int d) {
         if (d == 1) { return "Jan"; }
         else if (d == 2) { return "Feb"; }
         else if (d == 3) { return "Mar"; }

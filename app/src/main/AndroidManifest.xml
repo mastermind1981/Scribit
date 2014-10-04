@@ -54,6 +54,10 @@
             android:name=".SavedAvPrefState"
             android:label="@string/title_activity_saved_av_pref_state" >
         </activity>
+        <activity
+            android:name=".ViewEntry"
+            android:label="@string/title_activity_view_entry" >
+        </activity>
     </application>
 
 </manifest>

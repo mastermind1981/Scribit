@@ -61,7 +61,7 @@ public class PostsDataAccessObject {
 
         //inherited method returns id of location in list
         long insertId = DBOnDevice.insert(PostTableHelper.POSTS_TABLE_NAME, null, values);
-        Log.e("ID TABLE COLUMN VALUE:\t", insertId + " " + PostTableHelper.COLUMN_ID + " = " + insertId);
+        //Log.e("ID TABLE COLUMN VALUE:\t", insertId + " " + PostTableHelper.COLUMN_ID + " = " + insertId);
         Cursor dbRowCursor = DBOnDevice.query(PostTableHelper.POSTS_TABLE_NAME,
                                               null, PostTableHelper.COLUMN_ID + " = " + insertId,
                                               null, null, null, null);
@@ -85,8 +85,10 @@ public class PostsDataAccessObject {
 
         Date d = null; //date CANNOT stay null!
         try { d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date); }
-        catch (ParseException pe) { pe.toString(); }
-        Post postyPoo = new Post(id, title, desc, locs, new File(filepath), d);
+        catch (ParseException pe) {
+            Log.e("DATE FORMAT\t", " = " + d.toString());
+        }
+        Post postyPoo = new Post(id, title, desc, locs, filepath, d);
 
         return postyPoo;
     }

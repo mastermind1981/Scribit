@@ -41,11 +41,11 @@ public class DateEntryFragment extends DialogFragment
     // This preserves the date so that when the post is written the proper date is written.
     // Note: ClassCastException thrown if host Activity does not implement interface properly
     public interface OnPostDateChangeListener {
-        public void onPostDateChange(int year, int month, int day);
+        public void onPostDateChange(int year, String month, int day);
     }
 
     @Override
     public void onDateSet(DatePicker datePicker, int year, int month, int day) {
-        hostDateChangeListener.onPostDateChange(year, month, day);
+        hostDateChangeListener.onPostDateChange(year, CustomPostAdapter.parseDateMonth(month), day);
     }
 }
