@@ -10,15 +10,22 @@
     tools:context="scribit.sjbodzo.com.scribit.JournalEntries">
 
     <ListView
-        android:id="@android:id/list"
+        android:id="@+id/"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
 
-    <Button
-        android:id="@+id/add_new_entry_button"
-        android:text="ADD NEW ENTRY"
+    <RelativeLayout
+        android:layout_alignParentBottom="true"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content">
+
+        <Button
+            android:id="@+id/add_new_entry_button"
+            android:text="ADD NEW ENTRY"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        </RelativeLayout>
 
 </LinearLayout>

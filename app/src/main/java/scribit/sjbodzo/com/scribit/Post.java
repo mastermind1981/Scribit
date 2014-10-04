@@ -37,13 +37,14 @@ public class Post implements Parcelable {
         status = in.readInt();
         id = in.readLong();
         location = new Double[]{ dAR[0], dAR[1] };
-        try { postDate = new SimpleDateFormat("yyyy-mm-dd", Locale.ENGLISH).parse(strVals[2]); }
+        Log.e("POSTDATE TESTING:\t", strVals[2]);
+        try { postDate = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(strVals[2]); }
         catch (ParseException pe) {
             Log.e("DATE FORMAT\t", " = " + postDate.toString());
         }
     }
 
-    static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
+    public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
         public Post createFromParcel(Parcel in) {
             return new Post(in);
         }
@@ -55,7 +56,14 @@ public class Post implements Parcelable {
     @Override
     public int describeContents() { return 0; }
     public void writeToParcel(Parcel destination, int flags) {
-        String[] strVals = { title, description, postDate.toString(), mediaFilePath };
+        StringBuffer sb = new StringBuffer(100);
+        SimpleDateFormat sdf = new SimpleDateFormat(); //defaults to using default locale and SHORT format for date
+        sdf.applyPattern("MMMM d, yyyy"); //set to same format as write Post in DAO
+        //sdf.applyPattern("EEE MMM dd HH:mm:ss z yyyy"); //apply specific pattern & ensure consistency w/ Date.ToString()
+        //Log.e("ACTUAL DATE\t", postDate.toString());
+        //Log.e("PATTERN FORMAT\t", sdf.toPattern()); //debugging to ensure pattern set
+        String dateVal = sdf.format(postDate);
+        String[] strVals = { title, description, dateVal, mediaFilePath };
         destination.writeStringArray(strVals);
         double[] gpsVals = { location[0].doubleValue(), location[1].doubleValue() };
         destination.writeDoubleArray(gpsVals);
