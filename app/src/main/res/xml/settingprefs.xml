@@ -43,8 +43,9 @@
             android:summary="Permanently delete all entries in journal. This is NOT reversible. Unlocked titles are preserved."
             android:title="Delete All" />
         <CheckBoxPreference
-            android:key="pref_key_toggle_exif"
-            android:summary="Choose whether or not to allow the app to grab information from photos, such as location and timestamps."
-            android:title="Use EXIF" />
+            android:key="pref_key_toggle_gps"
+            android:defaultValue="true"
+            android:summary="Choose whether or not to allow the app to grab information from photos or GPS, such as location and timestamps."
+            android:title="Use GPS" />
     </PreferenceCategory>
 </PreferenceScreen>

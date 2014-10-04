@@ -86,13 +86,13 @@ public class JournalEntries extends ListActivity {
         if (isFirstTimeUser) {
             //populate initial challenges!
             final CustomPostAdapter adapter = (CustomPostAdapter) getListAdapter();
-            Post newPost = postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010");
+            Post newPost = postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010", false, false);
             adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 2", "insane aehkpost bruh", 23.2, 99.42, "", "February 22, 2010");
+            newPost = postsTableDAO.createJournalPost("Foo 2", "insane aehkpost bruh", 200.0, 99.42, "", "February 22, 2010", false, false);
             adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", 23.2, 99.42, "", "December 17, 2010");
+            newPost = postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", -100, 99.42, "", "December 17, 2010", false, false);
             adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 23.2, 99.42, "", "November 14, 2010");
+            newPost = postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 33.99, 99.42, "", "November 14, 2010", false, false);
             adapter.add(newPost);
             adapter.notifyDataSetChanged();
 

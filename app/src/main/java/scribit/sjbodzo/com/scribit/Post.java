@@ -16,6 +16,7 @@ public class Post implements Parcelable {
     protected String title, description;
     protected Double[] location;
     protected String mediaFilePath;
+    protected boolean hasVid, hasImg;
     protected Date postDate;
 
     public Post(long id, String title, String description,
@@ -26,6 +27,8 @@ public class Post implements Parcelable {
         this.location = location;
         this.mediaFilePath = mediaFilePath;
         this.postDate = postDate;
+        setHazImg(false);
+        setHazVid(false);
     }
 
     Post(Parcel in) {
@@ -34,14 +37,27 @@ public class Post implements Parcelable {
         title = strVals[0];
         description = strVals[1];
         mediaFilePath = strVals[3];
+        String mediaFlag = strVals[4];
+        if (mediaFlag.equals("0")) {
+            //do nothing, default assumption is no media associated
+        }
+        else if (mediaFlag.equals("1")) {
+            //img file associated
+            hasImg = true;
+        }
+        else if (mediaFlag.equals("2")) {
+            //vid file associated
+            hasVid = true;
+        }
         status = in.readInt();
         id = in.readLong();
         location = new Double[]{ dAR[0], dAR[1] };
-        Log.e("POSTDATE TESTING:\t", strVals[2]);
+        //Log.e("POSTDATE TESTING:\t", strVals[2]);
         try { postDate = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(strVals[2]); }
         catch (ParseException pe) {
             Log.e("DATE FORMAT\t", " = " + postDate.toString());
         }
+        //Log.e("POSTDATE TESTING:\t", strVals[2]);
     }
 
     public static final Parcelable.Creator<Post> CREATOR = new Parcelable.Creator<Post>() {
@@ -63,13 +79,22 @@ public class Post implements Parcelable {
         //Log.e("ACTUAL DATE\t", postDate.toString());
         //Log.e("PATTERN FORMAT\t", sdf.toPattern()); //debugging to ensure pattern set
         String dateVal = sdf.format(postDate);
-        String[] strVals = { title, description, dateVal, mediaFilePath };
+        String mediaFlag;
+        if (hasVid) mediaFlag = "2";
+        else if (hasImg) mediaFlag = "1";
+        else mediaFlag = "0";
+
+        String[] strVals = { title, description, dateVal, mediaFilePath, mediaFlag };
         destination.writeStringArray(strVals);
         double[] gpsVals = { location[0].doubleValue(), location[1].doubleValue() };
         destination.writeDoubleArray(gpsVals);
         destination.writeInt(status);
         destination.writeLong(id);
     }
+    public boolean doesHazVid() { return hasVid; }
+    public boolean doesHazImg() { return hasImg; }
+    public void setHazVid(boolean b) { hasVid = b; }
+    public void setHazImg(boolean b) { hasImg = b; }
     public void setTitle(String j) { if(!j.isEmpty()) title = j; }
     public void setDescription(String d) { if(!d.isEmpty()) description = d; }
     public void setLocation(Double[] loc) { this.location = loc; }

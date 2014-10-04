@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -21,12 +22,14 @@ public class AddEntryWizard extends Activity
     private double gpsx, gpsy;
     private EditText titleET, descET;
     private Context self;
+    private boolean hazVid, hazImg;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_entry_wizard);
         gpsx = 0; gpsy = 0;
+        hazVid = false; hazImg = false;
         self = this;
 
         ImageButton calendarIB = (ImageButton) findViewById(R.id.when_ib);
@@ -65,42 +68,56 @@ public class AddEntryWizard extends Activity
         date = sBob.toString();
     }
 
+    public boolean checkForErrorsBeforeSubmission() {
+        boolean hasErrors = false;
+        if (fetchEntryTitle() == null) {
+            //TODO: custom TOASTS!!
+            Toast.makeText(self, "Please add a title to save your entry.", Toast.LENGTH_SHORT).show();
+            hasErrors = true;
+        }
+        if (fetchEntryDescription() == null) {
+            //TODO: show alert to user to ensure they don't want to put in a description
+            Toast.makeText(self, "Please add a description to save your entry.", Toast.LENGTH_SHORT).show();
+            hasErrors = true;
+        }
+        if (mediaFilePath == null) {
+            //TODO: show alert to user to ensure they don't want to add media
+            mediaFilePath = "";
+            //hasErrors = true;
+        }
+        if (date == null || date.equals("")) {
+            Toast.makeText(self, "Hey, you forgot to tell us when this happened!", Toast.LENGTH_SHORT).show();
+            hasErrors = true;
+        }
+        if (gpsx == 0 && gpsy == 0) {
+            Toast.makeText(self, "Don't you want to say where you were when this happened?", Toast.LENGTH_SHORT).show();
+            //hasErrors = true;
+        }
+        return hasErrors;
+    }
+
     View.OnClickListener submitEntryListener = new View.OnClickListener() {
         public void onClick(View v) {
             //TODO: animation / transition to show that your post added successfully
 
             //Check for bad values that werent validated on input (null values)
-            boolean hasErrors = false;
-            if (fetchEntryTitle() == null) {
-                //TODO: custom TOASTS!!
-                Toast.makeText(self, "Please add a title to save your entry.", Toast.LENGTH_SHORT).show();
-                hasErrors = true;
+            if(checkForErrorsBeforeSubmission()) return;
+
+            //Save GPS information for location if you can...
+            SharedPreferences sp = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
+            Boolean isGPSEnabled = sp.getBoolean("pref_key_toggle_gps", false);
+            ImageGPSUtility iGPS = new ImageGPSUtility();
+            if(isGPSEnabled) {
+                iGPS.recordGPS(null, getApplicationContext());
+                gpsx = iGPS.getLat(); //note x is actually lattitude
+                gpsy = iGPS.getLon(); //note y is actually longitude
             }
-            if (fetchEntryDescription() == null) {
-                //TODO: show alert to user to ensure they don't want to put in a description
-                Toast.makeText(self, "Please add a description to save your entry.", Toast.LENGTH_SHORT).show();
-                hasErrors = true;
-            }
-            if (mediaFilePath == null) {
-                //TODO: show alert to user to ensure they don't want to add media
-                mediaFilePath = "";
-                hasErrors = true;
-            }
-            if (date == null) {
-                Toast.makeText(self, "Hey, you forgot to tell us when this happened!", Toast.LENGTH_SHORT).show();
-                hasErrors = true;
-            }
-            if (gpsx == 0 && gpsy == 0) {
-                Toast.makeText(self, "Don't you want to say where you were when this happened?", Toast.LENGTH_SHORT).show();
-                hasErrors = true;
-            }
-            if(hasErrors) return;
 
             //Write data object to database for persistence in app
             PostsDataAccessObject DAO = new PostsDataAccessObject(self);
             DAO.open();
             Post newPost = DAO.createJournalPost(fetchEntryTitle(), fetchEntryDescription(),
-                                                 gpsx, gpsy, mediaFilePath, date);
+                                                 gpsx, gpsy, mediaFilePath, date, hazImg, hazVid);
             DAO.close();
 
             //Fire off intent to get back to main journal page
@@ -155,7 +172,9 @@ public class AddEntryWizard extends Activity
         this.gpsy = gpsy;
     }
 
-    public void onAddMediaFileChange(String path) {
+    public void onAddMediaFileChange(String path, int i) {
         mediaFilePath = path;
+        if (i == 1) hazImg = true;
+        else if (i == 2) hazVid = true;
     }
 }

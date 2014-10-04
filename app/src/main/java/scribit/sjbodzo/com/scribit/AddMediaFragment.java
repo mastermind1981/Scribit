@@ -59,14 +59,21 @@ public class AddMediaFragment extends DialogFragment {
     //This method handles the intents to fetch an image or video, filtering by the intent request code, responding accordingly.
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
         //Check if the recent fetch of a media asset was successful before proceeding any further.
+        int medVal;
         if (resultCode == Activity.RESULT_OK) {
             Uri mediaContentScheme = data.getData(); // gets scheme of data, likely content: managed by content provider
 
             //Associates data structure column reference to the proper column for the type of media we want.
             String[] mediaPathCol = new String[1];
-            if (requestCode == IMAGE_RQ) mediaPathCol[0] = MediaStore.Images.Media.DATA; //defines data structure col as the image col
-            else if (requestCode == VID_RQ) mediaPathCol[0] = MediaStore.Video.Media.DATA; //defines data structure col as the video col
-            else {} //do nothing for now, because the request was malformed
+            if (requestCode == IMAGE_RQ) {
+                mediaPathCol[0] = MediaStore.Images.Media.DATA; //defines data structure col as the image col
+                medVal = 1;
+            }
+            else if (requestCode == VID_RQ) {
+                mediaPathCol[0] = MediaStore.Video.Media.DATA; //defines data structure col as the video col
+                medVal = 2;
+            }
+            else { return; } //do nothing for now, because the request was malformed
 
             //Content Resolve acts like Mediator between structured data & clients who wants to access it, decouples data design from
             //class needs to fetch that data. Data accessed as SQL-like query (projection) of data structure iterated through by cursor.
@@ -76,7 +83,7 @@ public class AddMediaFragment extends DialogFragment {
             int columnIndex = mediaCursor.getColumnIndex(mediaPathCol[0]); //collects column in data structure of our media
             String pathToMedia = mediaCursor.getString(columnIndex); //path to media parsed at column in data structure
             mediaCursor.close(); //close Cursor after data projection no longer needed
-            ((OnAddMediaFileChangeListener) hostActivity).onAddMediaFileChange(pathToMedia); //store data in host activity for DB post write
+            ((OnAddMediaFileChangeListener) hostActivity).onAddMediaFileChange(pathToMedia, medVal); //store data in host activity for DB post write
         }
         else {
             // something went wrong fetching the request (might be that the user has uninstalled media handling apps
@@ -85,6 +92,6 @@ public class AddMediaFragment extends DialogFragment {
     }
 
     public interface OnAddMediaFileChangeListener {
-        public void onAddMediaFileChange(String path);
+        public void onAddMediaFileChange(String path, int i); //int is 1 for img, 2 for vid
     }
 }

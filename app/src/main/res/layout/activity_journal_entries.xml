@@ -10,7 +10,7 @@
     tools:context="scribit.sjbodzo.com.scribit.JournalEntries">
 
     <ListView
-        android:id="@+id/"
+        android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />

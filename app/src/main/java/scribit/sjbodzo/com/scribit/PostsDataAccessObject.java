@@ -48,7 +48,8 @@ public class PostsDataAccessObject {
 
     //creates Post object via wizard interaction in AddJournalEntry within DB
     public Post createJournalPost(String title, String desc, double gps_x,
-                                  double gps_y, String imgpath, String date) {
+                                  double gps_y, String imgpath, String date,
+                                  boolean hazImg, boolean hazVid) {
         //TODO: input validation before attempting write on DB (i.e: for non null fields)
         //this includes primitives that CANNOT be null ^ 
         ContentValues values = new ContentValues();
@@ -58,6 +59,12 @@ public class PostsDataAccessObject {
         values.put(PostTableHelper.COLUMN_LOC_Y, gps_y);
         values.put(PostTableHelper.COLUMN_IMGPATH, imgpath);
         values.put(PostTableHelper.COLUMN_DATE, date);
+        if (hazImg) values.put(PostTableHelper.COLUMN_MEDIATYPE_FLAG, "1");
+        else if (hazVid) values.put(PostTableHelper.COLUMN_MEDIATYPE_FLAG, "2");
+        else values.put(PostTableHelper.COLUMN_MEDIATYPE_FLAG, "0");
+
+        //DEBUGGING img/vid pickup error(s)
+        Log.e("HASVID/HASIMG\t", hazImg + " " + hazVid);
 
         //inherited method returns id of location in list
         long insertId = DBOnDevice.insert(PostTableHelper.POSTS_TABLE_NAME, null, values);
@@ -81,14 +88,20 @@ public class PostsDataAccessObject {
         double locy = cursor.getDouble(cursor.getColumnIndex(PostTableHelper.COLUMN_LOC_Y));
         String filepath = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_IMGPATH));
         String date = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_DATE));
+        String mediaFlag = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_MEDIATYPE_FLAG));
         Double[] locs = new Double[] {locx, locy};
 
+        Log.e("DATE FORMAT PRE\t", " = " + date.toString());
         Date d = null; //date CANNOT stay null!
         try { d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date); }
         catch (ParseException pe) {
-            Log.e("DATE FORMAT\t", " = " + d.toString());
+            Log.e("DATE FORMAT\t", " = " + date.toString());
         }
+        Log.e("DATE FORMAT\t", " = " + d.toString());
         Post postyPoo = new Post(id, title, desc, locs, filepath, d);
+        if (mediaFlag.equals("1")) postyPoo.setHazImg(true);
+        else if (mediaFlag.equals("2")) postyPoo.setHazVid(true);
+        Log.e("HASVID/HASIMG\t", postyPoo.doesHazVid() + " " + postyPoo.doesHazImg());
 
         return postyPoo;
     }

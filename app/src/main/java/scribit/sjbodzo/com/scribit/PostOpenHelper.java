@@ -16,6 +16,7 @@ public class PostOpenHelper extends SQLiteOpenHelper {
     public static final String COLUMN_LOC_Y = "_loc_y";
     public static final String COLUMN_IMGPATH = "_imgpath";
     public static final String COLUMN_DATE = "_date";
+    public static final String COLUMN_MEDIATYPE_FLAG = "_mediatype";
 
     private static final String POSTS_TABLE_CREATE_STMNT =
             "CREATE TABLE " + POSTS_TABLE_NAME +
@@ -26,7 +27,8 @@ public class PostOpenHelper extends SQLiteOpenHelper {
                 COLUMN_LOC_X + " REAL, " +
                 COLUMN_LOC_Y + " REAL, " +
                 COLUMN_IMGPATH + " TEXT, " +
-                COLUMN_DATE + " TEXT NOT NULL" +
+                COLUMN_DATE + " TEXT NOT NULL, " +
+                COLUMN_MEDIATYPE_FLAG + " TEXT NOT NULL" +
             ");";
 
     PostOpenHelper(Context context) {
