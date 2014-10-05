@@ -21,6 +21,7 @@
 
         <Button
             android:id="@+id/add_new_entry_button"
+            style="@style/NavActionButton"
             android:text="ADD NEW ENTRY"
             android:layout_alignParentBottom="true"
             android:layout_width="fill_parent"

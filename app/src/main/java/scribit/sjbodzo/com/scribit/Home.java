@@ -2,25 +2,38 @@ package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 
 public class Home extends Activity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_home);
+        LayoutInflater lif = getLayoutInflater();
+        View v = lif.inflate(R.layout.activity_home, null);
 
         //Hook up onClickListener's for Buttons
-        Button journalViewButton = (Button) findViewById(R.id.journalEnt_button);
+        Button journalViewButton = (Button) v.findViewById(R.id.journalEnt_button);
         journalViewButton.setOnClickListener(launchJournalMainView);
-
-        Button challengeTrackerButton = (Button) findViewById(R.id.challengeTracker_button);
+        Button challengeTrackerButton = (Button) v.findViewById(R.id.challengeTracker_button);
         challengeTrackerButton.setOnClickListener(launchChallengeTrackerView);
+        Button settingsButton = (Button) v.findViewById(R.id.options_button);
+        settingsButton.setOnClickListener(launchOptionsView);
+
+        //Set title dynamically to one set in preferences
+        TextView titleTV = (TextView) v.findViewById(R.id.titleName_tv);
+        SharedPreferences sp = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
+        String listPrefStr = sp.getString("pref_key_titlename", "the Noodle");
+        titleTV.setText(listPrefStr);
+
+        setContentView(v);
 
         /**
         Button optionsButton = (Button) findViewById(R.id.options_button);
@@ -42,14 +55,12 @@ public class Home extends Activity {
         }
     };
 
-    /**
     View.OnClickListener launchOptionsView = new View.OnClickListener() {
         public void onClick(View v) {
-            Intent launchOptionsIntent = new Intent(getApplicationContext(), Options.class);
-            startActivity(Options);
+            Intent launchOptionsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
+            startActivity(launchOptionsIntent);
         }
     };
-    **/
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

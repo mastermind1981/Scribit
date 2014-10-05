@@ -92,18 +92,21 @@
 
     <Button
         android:id="@+id/journalEnt_button"
+        style="@style/NavActionButton"
         android:text="JOURNAL ENTRIES"
         android:layout_width="fill_parent"
         android:layout_height="65dip" />
 
     <Button
         android:id="@+id/challengeTracker_button"
+        style="@style/NavActionButton"
         android:text="CHALLENGE TRACKER"
         android:layout_width="fill_parent"
         android:layout_height="65dip" />
 
     <Button
         android:id="@+id/options_button"
+        style="@style/NavActionButton"
         android:text="OPTIONS"
         android:layout_width="fill_parent"
         android:layout_height="65dip" />

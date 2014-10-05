@@ -22,12 +22,10 @@
             android:key="pref_key_titlename"
             android:summary="Select your title from unlocked challenge rewards!"
             android:title="Title"
-            android:defaultValue="the Novice"
+            android:defaultValue="1"
             android:dialogTitle="Choose from your unlocked titles below"
-            android:dialogMessage="To choose more titles, complete more challenges"
             android:entries="@array/titles_unlocked_entries"
             android:entryValues="@array/titles_unlocked_vals" />
-            <!-- TODO: fix list entries/entryValues-->
         <scribit.sjbodzo.com.scribit.AvatarPreference
             android:id="@+id/av_pref_ref"
             android:defaultValue="R.drawable.ic_avatar"
