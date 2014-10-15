@@ -6,12 +6,15 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.GridView;
+import android.widget.ListAdapter;
 import android.widget.ListView;
 
 import java.util.List;
@@ -19,17 +22,25 @@ import java.util.List;
 public class JournalEntries extends ListActivity {
     private PostsDataAccessObject postsTableDAO;
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
+    private View v;
     private ListView lv;
+    private GridView gv;
     private Context self;
+    private ListAdapter listAdapter;
+    private List<Post> posts;
+    private PostGridAdapter postsGrid;
+    private CustomPostAdapter postsList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_journal_entries);
-        lv = getListView();
+        LayoutInflater lif = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
+        v = lif.inflate(R.layout.activity_journal_entries, null);
+        setContentView(v);
+        lv = (ListView) v.findViewById(android.R.id.list);
+        gv = (GridView) v.findViewById(R.id.gridview_entries);
         self = this;
         setupDAOAndCursorAdapter(); //hook app into stored DB of entries
-        firstLaunchCheck(); //if this is the first app launch respond accordingly
 
         Button addEntryButton = (Button) findViewById(R.id.add_new_entry_button);
         addEntryButton.setOnClickListener(new View.OnClickListener() {
@@ -66,41 +77,42 @@ public class JournalEntries extends ListActivity {
         //TODO: link to addJournalEntry page
     }
 
+    public void toggleViewAdapter() {
+        if (listAdapter instanceof CustomPostAdapter) {
+            gv.setVisibility(View.VISIBLE);
+            lv.setVisibility(View.GONE);
+            this.setListAdapter(postsGrid);
+        }
+        else {
+            lv.setVisibility(View.VISIBLE);
+            gv.setVisibility(View.GONE);
+            this.setListAdapter(postsList);
+        }
+        listAdapter = getListAdapter(); //update ref to activity var
+        v.invalidate();
+    }
+
     public void setupDAOAndCursorAdapter() {
         postsTableDAO = new PostsDataAccessObject(this); //associate to current Context
         postsTableDAO.open(); //inherited method, sets DB ref
+        posts = postsTableDAO.getAllOfThePostyThings();
+        postsGrid = new PostGridAdapter(this, posts);
+        postsList = new CustomPostAdapter(this, posts);
 
-        //TODO: call method to check if first time app load
-
-        //hook in Cursor adapter
-        //TODO: put group by functionality into call here when view flips
-        List<Post> posts = postsTableDAO.getAllOfThePostyThings();
-        ArrayAdapter<Post> velocidaptor = new CustomPostAdapter(this, posts);
-        this.setListAdapter(velocidaptor);
-    }
-
-    //TODO: incorporate first launch logic into startup screen of app?
-    public void firstLaunchCheck() {
         SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
-        boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);
-        if (isFirstTimeUser) {
-            //populate initial challenges!
-            final CustomPostAdapter adapter = (CustomPostAdapter) getListAdapter();
-            Post newPost = postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010", false, false);
-            adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 2", "insane aehkpost bruh", 200.0, 99.42, "", "February 22, 2010", false, false);
-            adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", -100, 99.42, "", "December 17, 2010", false, false);
-            adapter.add(newPost);
-            newPost = postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 33.99, 99.42, "", "November 14, 2010", false, false);
-            adapter.add(newPost);
-            adapter.notifyDataSetChanged();
-
-            //set status to already visited
-            SharedPreferences.Editor eddy = spRef.edit();
-            eddy.putBoolean("pref_key_virginal_ux", false);
-            eddy.apply();
+        boolean prefersList = spRef.getBoolean("pref_key_prefersList", true);
+        if (prefersList) {
+            lv.setVisibility(View.VISIBLE);
+            gv.setVisibility(View.GONE);
+            this.setListAdapter(postsList);
         }
+        else {
+            gv.setVisibility(View.VISIBLE);
+            lv.setVisibility(View.GONE);
+            this.setListAdapter(postsGrid);
+        }
+        listAdapter = getListAdapter();
+        v.invalidate();
     }
 
 
@@ -145,6 +157,9 @@ public class JournalEntries extends ListActivity {
             Intent i = new Intent(getApplicationContext(), AddEntryWizard.class);
             startActivity(i);
             return true;
+        }
+        else if (id == R.id.view_toggle) {
+            toggleViewAdapter();
         }
         else {}
         return super.onOptionsItemSelected(item);

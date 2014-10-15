@@ -14,5 +14,13 @@
     <string name="title_activity_saved_av_pref_state">SavedAvPrefState</string>
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="title_activity_view_entry">ViewEntry</string>
+    <string name="appwidget_text">EXAMPLE</string>
+    <string name="add_widget">Add widget</string>
+    <string name="foodie_desc">Eat me!</string>
+    <string name="outdoorsy_desc">Soak up the sun</string>
+    <string name="sportsandrec_desc">Adventurous types apply here</string>
+    <string name="title_activity_challenge_open_helper">ChallengeOpenHelper</string>
+    <string name="title_activity_challenge_directory">ChallengeDirectory</string>
+    <string name="title_activity_post_grid_adapter">PostGridAdapter</string>
 
 </resources>

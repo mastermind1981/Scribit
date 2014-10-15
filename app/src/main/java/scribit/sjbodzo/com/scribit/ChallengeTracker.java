@@ -36,13 +36,13 @@ public class ChallengeTracker extends View {
 
     public ChallengeTracker(Context context, AttributeSet attrs) {
         super(context, attrs);
-        getScreenResolution(context);
-        setupDrawing();
+        //getScreenResolution(context);
+        //setupDrawing();
 
-        this.startTime = System.currentTimeMillis();
-        this.postInvalidate();
+        //this.startTime = System.currentTimeMillis();
+        //this.postInvalidate();
     }
-
+/**
     private void getScreenResolution(Context context)
     {
         WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
@@ -135,4 +135,5 @@ public class ChallengeTracker extends View {
         canvasBitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
         drawCanvas = new Canvas(canvasBitmap);
     }
+    **/
 }

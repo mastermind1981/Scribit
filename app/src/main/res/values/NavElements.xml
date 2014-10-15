@@ -13,4 +13,9 @@
         <item name="android:textSize">27sp</item>
         <item name="android:fontFamily">sans-serif-light</item>
     </style>
+
+    <style name="CategoryHeader" parent="@android:style/Widget.TextView">
+        <item name="android:textSize">31sp</item>
+        <item name="android:paddingBottom">12dp</item>
+    </style>
 </resources>

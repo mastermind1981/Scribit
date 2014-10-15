@@ -67,6 +67,19 @@ public class SettingsActivity extends PreferenceActivity {
         };
         avp.setOnPreferenceClickListener(pOpCL);
 
+        Preference.OnPreferenceClickListener toggleListPref = new Preference.OnPreferenceClickListener() {
+            @Override
+            public boolean onPreferenceClick(Preference preference) {
+                SharedPreferences.Editor ed = spRef.edit();
+                boolean curVal = spRef.getBoolean("pref_key_prefersList", true);
+                ed.putBoolean("pref_key_prefersList", !curVal);
+                ed.apply();
+                return true;
+            }
+        };
+        CheckBoxPreference cbp2 = (CheckBoxPreference) findPreference("pref_key_prefersList");
+        cbp2.setOnPreferenceClickListener(toggleListPref);
+
         //Hook listener to update GPS pref accordingly
         Preference.OnPreferenceClickListener doGPSL = new Preference.OnPreferenceClickListener() {
             @Override

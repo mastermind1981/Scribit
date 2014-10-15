@@ -10,10 +10,17 @@
     tools:context="scribit.sjbodzo.com.scribit.JournalEntries">
 
     <ListView
+        android:visibility="gone"
         android:id="@android:id/list"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
     />
+
+    <GridView
+        android:visibility="gone"
+        android:id="@+id/gridview_entries"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
 
     <RelativeLayout
         android:layout_width="fill_parent"

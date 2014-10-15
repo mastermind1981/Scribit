@@ -26,6 +26,8 @@ public class Home extends Activity {
         challengeTrackerButton.setOnClickListener(launchChallengeTrackerView);
         Button settingsButton = (Button) v.findViewById(R.id.options_button);
         settingsButton.setOnClickListener(launchOptionsView);
+        Button challengesDirViewButton = (Button) v.findViewById(R.id.challengeDirViewButton);
+        challengesDirViewButton.setOnClickListener(launchChallengeDirView);
 
         //Set title dynamically to one set in preferences
         TextView titleTV = (TextView) v.findViewById(R.id.titleName_tv);
@@ -59,6 +61,13 @@ public class Home extends Activity {
         public void onClick(View v) {
             Intent launchOptionsIntent = new Intent(getApplicationContext(), SettingsActivity.class);
             startActivity(launchOptionsIntent);
+        }
+    };
+
+    View.OnClickListener launchChallengeDirView = new View.OnClickListener() {
+        public void onClick(View v) {
+            Intent launchChallDirViewIntent = new Intent(getApplicationContext(), ChallengeDirectory.class);
+            startActivity(launchChallDirViewIntent);
         }
     };
 

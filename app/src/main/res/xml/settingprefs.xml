@@ -11,6 +11,13 @@
             android:summary="Toggle for first time user of the application."
             android:title="1st time user?"
             android:defaultValue="true" />
+        <CheckBoxPreference
+            android:id="@+id/prefersListOfEntries"
+            android:visibility="visible"
+            android:key="pref_key_prefersList"
+            android:summary="If checked, you prefer to see your journal entries in a list format, as opposed to a grid format. If unchecked, then the opposite holds true."
+            android:title="List or Grid?"
+            android:defaultValue="true" />
         <EditTextPreference
             android:key="pref_key_username"
             android:summary="Your username within the app"

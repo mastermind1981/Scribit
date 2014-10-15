@@ -2,6 +2,7 @@ package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -14,6 +15,9 @@ import com.facebook.*;
 import com.facebook.model.*;
 
 public class LoginActivity extends Activity {
+    public static final String PREFS_SETTINGS = "TheSettingsFileYall";
+    private PostsDataAccessObject postsTableDAO;
+    private ChallengeTaskDataAccessObject challTableDAO;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +50,15 @@ public class LoginActivity extends Activity {
                 }
             }
         });
+
+        //prepare data access object to write to DBs
+        postsTableDAO = new PostsDataAccessObject(this); //associate to current Context
+        postsTableDAO.open(); //inherited method, sets DB ref
+        challTableDAO = new ChallengeTaskDataAccessObject(this);
+        challTableDAO.open();
+
+        //perform necessary checks if this is first app load
+        firstLaunchCheck();
     }
 
     @Override
@@ -67,6 +80,27 @@ public class LoginActivity extends Activity {
             startActivity(launchHomeView);
         }
     };
+
+    //TODO: incorporate inviting tutorial to first time app user?
+    public void firstLaunchCheck() {
+        SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
+        boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);
+        if (isFirstTimeUser) {
+            //populate initial posts in application
+            Post newPost = postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010", false, false);
+            newPost = postsTableDAO.createJournalPost("Foo 2", "insane aehkpost bruh", 200.0, 99.42, "", "February 22, 2010", false, false);
+            newPost = postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", -100, 99.42, "", "December 17, 2010", false, false);
+            newPost = postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 33.99, 99.42, "", "November 14, 2010", false, false);
+
+            ChallengeTask challengeTask = challTableDAO.createChallengeTaskEntry("Post an Entry", "For your first challenge you will post an entry!",
+                                                                                 10, "the Newbie", "", false, "Other");
+
+            //set status to already visited
+            SharedPreferences.Editor eddy = spRef.edit();
+            eddy.putBoolean("pref_key_virginal_ux", false);
+            eddy.apply();
+        }
+    }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

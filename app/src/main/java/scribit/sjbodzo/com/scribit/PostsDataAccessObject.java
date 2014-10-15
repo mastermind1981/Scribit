@@ -64,7 +64,7 @@ public class PostsDataAccessObject {
         else values.put(PostTableHelper.COLUMN_MEDIATYPE_FLAG, "0");
 
         //DEBUGGING img/vid pickup error(s)
-        Log.e("HASVID/HASIMG\t", hazImg + " " + hazVid);
+        //Log.e("HASVID/HASIMG\t", hazImg + " " + hazVid);
 
         //inherited method returns id of location in list
         long insertId = DBOnDevice.insert(PostTableHelper.POSTS_TABLE_NAME, null, values);
@@ -91,17 +91,17 @@ public class PostsDataAccessObject {
         String mediaFlag = cursor.getString(cursor.getColumnIndex(PostTableHelper.COLUMN_MEDIATYPE_FLAG));
         Double[] locs = new Double[] {locx, locy};
 
-        Log.e("DATE FORMAT PRE\t", " = " + date.toString());
+        //Log.e("DATE FORMAT PRE\t", " = " + date.toString());
         Date d = null; //date CANNOT stay null!
         try { d = new SimpleDateFormat("MMMM d, yyyy", Locale.ENGLISH).parse(date); }
         catch (ParseException pe) {
             Log.e("DATE FORMAT\t", " = " + date.toString());
         }
-        Log.e("DATE FORMAT\t", " = " + d.toString());
+        //Log.e("DATE FORMAT\t", " = " + d.toString());
         Post postyPoo = new Post(id, title, desc, locs, filepath, d);
         if (mediaFlag.equals("1")) postyPoo.setHazImg(true);
         else if (mediaFlag.equals("2")) postyPoo.setHazVid(true);
-        Log.e("HASVID/HASIMG\t", postyPoo.doesHazVid() + " " + postyPoo.doesHazImg());
+        //Log.e("HASVID/HASIMG\t", postyPoo.doesHazVid() + " " + postyPoo.doesHazImg());
 
         return postyPoo;
     }

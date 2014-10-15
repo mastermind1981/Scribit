@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="ChallengeCategoryWidget">
+        <attr name="strokeColor" format="integer"></attr>
+        <attr name="radius" format="integer"></attr>
+        <attr name="hasTextComponent" format="boolean"></attr>
+        <attr name="categoryName" format="string"></attr>
+        <attr name="categoryDesc" format="string"></attr>
+    </declare-styleable>
+</resources>

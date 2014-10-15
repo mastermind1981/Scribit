@@ -56,6 +56,29 @@
             android:name=".ViewEntry"
             android:label="@string/title_activity_view_entry" >
         </activity>
+
+        <receiver android:name=".CircularImageButton" >
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/circular_image_view_info" />
+        </receiver>
+
+        <activity
+            android:name=".ChallengeOpenHelper"
+            android:label="@string/title_activity_challenge_open_helper" >
+        </activity>
+        <activity
+            android:name=".ChallengeDirectory"
+            android:label="@string/title_activity_challenge_directory" >
+        </activity>
+        <activity
+            android:name=".PostGridAdapter"
+            android:label="@string/title_activity_post_grid_adapter" >
+        </activity>
     </application>
 
 </manifest>
