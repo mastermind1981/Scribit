@@ -74,8 +74,8 @@ public class SettingsActivity extends PreferenceActivity {
                 boolean curVal = spRef.getBoolean("pref_key_prefersList", true);
                 ed.putBoolean("pref_key_prefersList", !curVal);
                 ed.apply();
-                CheckBoxPreference cbp = (CheckBoxPreference)preference;
-                cbp.setChecked(!(cbp.isChecked()));
+                //CheckBoxPreference cbp = (CheckBoxPreference)preference;
+                //cbp.setChecked(!(cbp.isChecked()));
                 return true;
             }
         };

@@ -1,0 +1,57 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="scribit.sjbodzo.com.scribit.LaunchActivity">
+
+    <TextView
+        style="@style/EntryTitle"
+        android:text="Welcome to Scribit!"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:paddingTop="15dp"
+        android:paddingBottom="15dp"
+        style="@style/EntryTitle"
+        android:textSize="22sp"
+        android:text="Our app aims to help you experience Gainesville in a fun new way, accomplishing challenges and unlocking titles. For the best experience, tap below on the Facebook icon to begin!"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:paddingTop="13dp"
+        android:paddingBottom="15dp"
+        style="@style/EntryTitle"
+        android:textSize="22sp"
+        android:text="If you do not wish to login using Facebook at this time, tap the button below continue without using Facebook."
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <RelativeLayout
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <com.facebook.widget.LoginButton
+            android:id="@+id/launchpage_loginButton"
+            android:layout_alignParentBottom="true"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        <Button
+            android:id="@+id/launchpage_noFBloginButton"
+            android:layout_above="@id/launchpage_loginButton"
+            style="@style/NavActionButton"
+            android:textSize="17sp"
+            android:text="Continue without Facebook"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        </RelativeLayout>
+
+</LinearLayout>

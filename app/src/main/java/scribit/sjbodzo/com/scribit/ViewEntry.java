@@ -19,14 +19,9 @@ import android.widget.ImageView;
 import android.widget.MediaController;
 import android.widget.TextView;
 import android.widget.VideoView;
-
-import org.w3c.dom.Text;
-
 import java.io.File;
 import java.io.IOException;
-import java.util.Calendar;
 import java.util.GregorianCalendar;
-
 
 public class ViewEntry extends Activity {
     Post postEntry;

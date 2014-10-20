@@ -3,13 +3,22 @@ package scribit.sjbodzo.com.scribit;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.media.Image;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
+
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
 
 public class Home extends Activity {
 
@@ -29,12 +38,30 @@ public class Home extends Activity {
         Button challengesDirViewButton = (Button) v.findViewById(R.id.challengeDirViewButton);
         challengesDirViewButton.setOnClickListener(launchChallengeDirView);
 
-        //Set title dynamically to one set in preferences
+        //todo: Set title dynamically to one set in preferences
         TextView titleTV = (TextView) v.findViewById(R.id.titleName_tv);
         SharedPreferences sp = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
         String listPrefStr = sp.getString("pref_key_titlename", "the Noodle");
         titleTV.setText(listPrefStr);
 
+        ImageView avView = (ImageView) v.findViewById(R.id.avatar_iv);
+
+        SharedPreferences spRef = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
+        String avFileRef = spRef.getString("pref_key_avatar", "R.drawable.ic_avatar"); //drawable ref, else path to media on device
+        if (avFileRef.equals("R.drawable.ic_avatar")) avView.setImageDrawable(getResources().getDrawable(R.drawable.ic_avatar));
+        else {
+            try {
+                Uri myURI = Uri.fromFile(new File(avFileRef));
+                Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), myURI);
+                avView.setImageBitmap(bitmap);
+                avView.setScaleType(ImageView.ScaleType.CENTER_CROP);
+                avView.setMaxHeight(140);
+                avView.setMaxWidth(140);
+            }
+            catch (IOException ioe) {
+                avView.setImageDrawable(getResources().getDrawable(R.drawable.ic_avatar));
+            }
+        }
         setContentView(v);
 
         /**

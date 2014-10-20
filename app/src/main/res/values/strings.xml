@@ -22,5 +22,7 @@
     <string name="title_activity_challenge_open_helper">ChallengeOpenHelper</string>
     <string name="title_activity_challenge_directory">ChallengeDirectory</string>
     <string name="title_activity_post_grid_adapter">PostGridAdapter</string>
+    <string name="title_activity_launch">LaunchActivity</string>
+    <string name="title_activity_login_activity">LoginActivity</string>
 
 </resources>
