@@ -10,10 +10,11 @@ import android.view.ViewGroup;
 import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.app.ListFragment;
+import android.widget.ListView;
 
 import java.util.List;
 
-public class JournalListViewFragment extends ListFragment implements AdapterView.OnItemClickListener {
+public class JournalListViewFragment extends ListFragment {
     private CustomPostAdapter postListAdapter;
     private PostsDataAccessObject postsDAO;
     private List<Post> posts;
@@ -36,6 +37,14 @@ public class JournalListViewFragment extends ListFragment implements AdapterView
     }
 
     @Override
+    public void onListItemClick(ListView lv, View v, int position, long id) {
+        final Post item = (Post) lv.getItemAtPosition(position);
+        Intent viewPostIntent = new Intent(c, ViewEntry.class);
+        viewPostIntent.putExtra("postEntry", item);
+        c.startActivity(viewPostIntent);
+    }
+
+    @Override
     public View onCreateView(LayoutInflater lif, ViewGroup vg, Bundle b) {
         postListAdapter = new CustomPostAdapter(c, posts);
         setListAdapter(postListAdapter);
@@ -43,15 +52,18 @@ public class JournalListViewFragment extends ListFragment implements AdapterView
         v = lif.inflate(R.layout.journal_entry_fragment_holder, null);
         AdapterView<Adapter> adv = (AdapterView<Adapter>) v.findViewById(android.R.id.list);
         adv.setAdapter(postListAdapter);
-        adv.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        adv.setOnItemClickListener(this);
-        return v;
-    }
-
-    public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
-        final Post item = (Post) parent.getItemAtPosition(position);
-        Intent viewPostIntent = new Intent(c, ViewEntry.class);
-        viewPostIntent.putExtra("postEntry", item);
-        c.startActivity(viewPostIntent);
+        //adv.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
+        /**
+        adv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                final Post item = (Post) parent.getItemAtPosition(position);
+                Intent viewPostIntent = new Intent(c, ViewEntry.class);
+                viewPostIntent.putExtra("postEntry", item);
+                c.startActivity(viewPostIntent);
+            }
+        });
+        **/
+        return adv;
     }
 }
