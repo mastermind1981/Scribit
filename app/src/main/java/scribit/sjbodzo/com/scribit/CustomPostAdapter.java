@@ -1,9 +1,11 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,6 +50,25 @@ public class CustomPostAdapter extends ArrayAdapter<Post> {
             challTV.setVisibility(TextView.VISIBLE);
         }
         return rowView;
+    }
+
+    public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
+        final Post item = (Post) parent.getItemAtPosition(position);
+        /**
+         view.animate().setDuration(200).translationX(140)
+         .withEndAction(new Runnable() {
+        @Override
+        public void run() {
+        //this.remove(item);
+        //adapter.notifyDataSetChanged();
+        Intent viewPostIntent = new Intent(c, EditPost.class);
+        c.startActivity(viewPostIntent);
+        }
+        });
+         **/
+        Intent viewPostIntent = new Intent(context, ViewEntry.class);
+        viewPostIntent.putExtra("postEntry", item);
+        context.startActivity(viewPostIntent);
     }
 
     public static String parseDateMonth(int d) {

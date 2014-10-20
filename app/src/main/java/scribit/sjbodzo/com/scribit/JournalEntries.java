@@ -1,5 +1,8 @@
 package scribit.sjbodzo.com.scribit;
 
+import android.app.Activity;
+import android.app.FragmentManager;
+import android.app.FragmentTransaction;
 import android.app.ListActivity;
 import android.content.Context;
 import android.content.Intent;
@@ -10,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.Adapter;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
+import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.ListAdapter;
@@ -19,28 +25,29 @@ import android.widget.ListView;
 
 import java.util.List;
 
-public class JournalEntries extends ListActivity {
-    private PostsDataAccessObject postsTableDAO;
+public class JournalEntries extends Activity {
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
-    private View v;
-    private ListView lv;
-    private GridView gv;
+    private JournalListViewFragment jlvf;
+    private JournalGridViewFragment jgvf;
+    private AdapterView<Adapter> adp;
+    private FragmentManager fgm;
+    private boolean hasList;
     private Context self;
-    private ListAdapter listAdapter;
-    private List<Post> posts;
-    private PostGridAdapter postsGrid;
-    private CustomPostAdapter postsList;
+    private View v;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         LayoutInflater lif = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         v = lif.inflate(R.layout.activity_journal_entries, null);
-        setContentView(v);
-        lv = (ListView) v.findViewById(android.R.id.list);
-        gv = (GridView) v.findViewById(R.id.gridview_entries);
         self = this;
-        setupDAOAndCursorAdapter(); //hook app into stored DB of entries
+
+        //hook in fragments to add layout representation dynamically
+        jlvf = new JournalListViewFragment();
+        jgvf = new JournalGridViewFragment();
+        fgm = getFragmentManager();
+        setupList();
+        setContentView(v);
 
         Button addEntryButton = (Button) findViewById(R.id.add_new_entry_button);
         addEntryButton.setOnClickListener(new View.OnClickListener() {
@@ -51,95 +58,44 @@ public class JournalEntries extends ListActivity {
             }
         });
 
-        lv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
-                final Post item = (Post) parent.getItemAtPosition(position);
-                /**view.animate().setDuration(200).translationX(140)
-                        .withEndAction(new Runnable() {
-                            @Override
-                            public void run() {
-                                //this.remove(item);
-                                //adapter.notifyDataSetChanged();
-                                Intent viewPostIntent = new Intent(self, EditPost.class);
-                                self.startActivity(viewPostIntent);
-                            }
-                        });
-                 **/
-                Intent viewPostIntent = new Intent(self, ViewEntry.class);
-                viewPostIntent.putExtra("postEntry", item);
-                self.startActivity(viewPostIntent);
-            }
-        });
-
         //TODO: animation for loading when busy grabbing list
-        //TODO: write onClick
         //TODO: animation for onClick
-        //TODO: link to addJournalEntry page
     }
 
     public void toggleViewAdapter() {
-        if (listAdapter instanceof CustomPostAdapter) {
-            gv.setVisibility(View.VISIBLE);
-            lv.setVisibility(View.GONE);
-            this.setListAdapter(postsGrid);
+        FragmentTransaction ft = fgm.beginTransaction();
+        if (hasList) {
+            ft.remove(jlvf);
+            ft.add(R.id.journalEnt_vg, jgvf);
         }
         else {
-            lv.setVisibility(View.VISIBLE);
-            gv.setVisibility(View.GONE);
-            this.setListAdapter(postsList);
+            ft.remove(jgvf);
+            ft.add(R.id.journalEnt_vg, jlvf);
         }
-        listAdapter = getListAdapter(); //update ref to activity var
-        v.invalidate();
+        ft.commit();
+        hasList = !hasList;
     }
 
-    public void setupDAOAndCursorAdapter() {
-        postsTableDAO = new PostsDataAccessObject(this); //associate to current Context
-        postsTableDAO.open(); //inherited method, sets DB ref
-        posts = postsTableDAO.getAllOfThePostyThings();
-        postsGrid = new PostGridAdapter(this, posts);
-        postsList = new CustomPostAdapter(this, posts);
-
+    public void setupList() {
+        FragmentTransaction ft = fgm.beginTransaction();
         SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
-        boolean prefersList = spRef.getBoolean("pref_key_prefersList", true);
+        boolean prefersList = spRef.getBoolean("pref_key_prefersList", false);
         if (prefersList) {
-            lv.setVisibility(View.VISIBLE);
-            gv.setVisibility(View.GONE);
-            this.setListAdapter(postsList);
+            hasList = true;
+            ft.add(R.id.journalEnt_vg, jlvf);
         }
         else {
-            gv.setVisibility(View.VISIBLE);
-            lv.setVisibility(View.GONE);
-            this.setListAdapter(postsGrid);
+            hasList = false;
+            ft.add(R.id.journalEnt_vg, jgvf);
         }
-        listAdapter = getListAdapter();
-        v.invalidate();
+        ft.commit();
     }
-
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.journal_entries, menu);
         return true;
-    }
-
-    /**
-     * onResume & onPause are lifecycle management methods that help make sure
-     * that the cursor refs are handled properly if/when user leaves this page
-     * of the app for whatever reason (i.e: phone call received or back call to
-     * Activity stack
-     */
-
-    @Override
-    protected void onResume() {
-        postsTableDAO.open();
-        super.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        postsTableDAO.close();
-        super.onPause();
     }
 
     @Override

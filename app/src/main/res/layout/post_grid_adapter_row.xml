@@ -1,4 +1,4 @@
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<GridView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/layout_practitioner"
     android:layout_width="match_parent"
@@ -28,11 +28,14 @@
             android:layout_weight="0.8" />
 
         <TextView
+            android:alpha="0.65"
             android:textSize="18sp"
+            android:background="#F2F2F2"
+            android:textColor="@color/aquaGreen"
             android:id="@+id/post_gridrow_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="0.2" />
 
     </LinearLayout>
-</FrameLayout>
+</GridView>
