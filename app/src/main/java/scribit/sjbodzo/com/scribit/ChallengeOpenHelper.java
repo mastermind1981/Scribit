@@ -10,6 +10,7 @@ public class ChallengeOpenHelper extends SQLiteOpenHelper {
     public static final int DATABASE_VERSION = 1;
     public static final String CHALL_TABLE_NAME = "challenges";
     public static final String COLUMN_ID = "_id";
+    public static final String COLUMN_STATUS = "_status"; //1 == completed, 0 == not done
     public static final String COLUMN_TITLE = "_title"; //what the challenge is called
     public static final String COLUMN_DESC = "_desc"; //what the challenge requires
     public static final String COLUMN_IMGPATH = "_imgpath"; //file ref to icon associated w/ challenge
@@ -28,6 +29,7 @@ public class ChallengeOpenHelper extends SQLiteOpenHelper {
                     COLUMN_POINTS + " INTEGER NOT NULL, " +
                     COLUMN_ISUSERMADE + " INTEGER NOT NULL, " +
                     COLUMN_CATEGORY + " TEXT NOT NULL, " +
+                    COLUMN_STATUS + " INTEGER NOT NULL, " +
                     COLUMN_UNLOCKED + " TEXT NOT NULL" +
                     ");";
 
@@ -45,7 +47,7 @@ public class ChallengeOpenHelper extends SQLiteOpenHelper {
         //log removal of old table
         Log.d(PostOpenHelper.class.getName(),
                 "Upgrading database from version " + alpha + " to "
-                        + beta + ", which will destroy all old data");
+                + beta + ", which will destroy all old data");
         //drop old table
         db.execSQL("DROP TABLE IF EXISTS " + CHALL_TABLE_NAME);
         //re-init new table

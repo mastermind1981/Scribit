@@ -52,18 +52,6 @@ public class JournalListViewFragment extends ListFragment {
         v = lif.inflate(R.layout.journal_entry_fragment_holder, null);
         AdapterView<Adapter> adv = (AdapterView<Adapter>) v.findViewById(android.R.id.list);
         adv.setAdapter(postListAdapter);
-        //adv.setDescendantFocusability(ViewGroup.FOCUS_BLOCK_DESCENDANTS);
-        /**
-        adv.setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                final Post item = (Post) parent.getItemAtPosition(position);
-                Intent viewPostIntent = new Intent(c, ViewEntry.class);
-                viewPostIntent.putExtra("postEntry", item);
-                c.startActivity(viewPostIntent);
-            }
-        });
-        **/
         return adv;
     }
 }

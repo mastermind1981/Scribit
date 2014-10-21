@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingTop="10dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <TextView
+        android:id="@+id/challTaskadapter_points_tv"
+        android:paddingTop="15dp"
+        android:paddingLeft="2dp"
+        android:textSize="38sp"
+        android:text="XXX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:maxLines="1"
+        android:maxLength="27"
+        android:paddingTop="10dp"
+        android:paddingLeft="20dp"
+        android:textSize="18sp"
+        android:text="TITLETITLETITLETITLETITLE"
+        android:layout_toRightOf="@id/challTaskadapter_points_tv"
+        android:id="@+id/challTaskadapter_title_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <TextView
+        android:maxLines="1"
+        android:maxLength="20"
+        android:paddingTop="4dp"
+        android:paddingLeft="20dp"
+        android:textSize="18sp"
+        android:text="CATEGORY"
+        android:layout_below="@id/challTaskadapter_title_tv"
+        android:layout_toRightOf="@id/challTaskadapter_points_tv"
+        android:id="@+id/challTaskadapter_cat_tv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/challTaskadapter_clipboard_done_iv"
+        android:src="@drawable/ic_clipboard_done"
+        android:layout_alignParentRight="true"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+    <ImageView
+        android:visibility="gone"
+        android:id="@+id/challTaskadapter_clipboard_inc_iv"
+        android:src="@drawable/ic_clipboard_incomplete"
+        android:layout_alignParentRight="true"
+        android:paddingTop="10dp"
+        android:paddingRight="10dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</RelativeLayout>

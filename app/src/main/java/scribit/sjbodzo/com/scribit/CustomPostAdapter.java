@@ -52,25 +52,6 @@ public class CustomPostAdapter extends ArrayAdapter<Post> {
         return rowView;
     }
 
-    public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
-        final Post item = (Post) parent.getItemAtPosition(position);
-        /**
-         view.animate().setDuration(200).translationX(140)
-         .withEndAction(new Runnable() {
-        @Override
-        public void run() {
-        //this.remove(item);
-        //adapter.notifyDataSetChanged();
-        Intent viewPostIntent = new Intent(c, EditPost.class);
-        c.startActivity(viewPostIntent);
-        }
-        });
-         **/
-        Intent viewPostIntent = new Intent(context, ViewEntry.class);
-        viewPostIntent.putExtra("postEntry", item);
-        context.startActivity(viewPostIntent);
-    }
-
     public static String parseDateMonth(int d) {
         if (d == 1) { return "Jan"; }
         else if (d == 2) { return "Feb"; }

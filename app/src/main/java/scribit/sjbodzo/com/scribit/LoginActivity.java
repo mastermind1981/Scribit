@@ -3,27 +3,17 @@ package scribit.sjbodzo.com.scribit;
 import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
-import android.content.pm.Signature;
 import android.os.Bundle;
-import android.util.Base64;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.TextView;
-import android.widget.Toast;
-
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
 import com.facebook.model.GraphUser;
-
-import java.security.MessageDigest;
-import java.security.NoSuchAlgorithmException;
 
 public class LoginActivity extends Activity {
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
@@ -56,7 +46,6 @@ public class LoginActivity extends Activity {
         firstLaunchCheck();
     }
 
-
     //TODO: incorporate inviting tutorial to first time app user?
     public void firstLaunchCheck() {
         SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
@@ -73,8 +62,18 @@ public class LoginActivity extends Activity {
             newPost = postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", -100, 99.42, "", "December 17, 2010", false, false);
             newPost = postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 33.99, 99.42, "", "November 14, 2010", false, false);
 
-            ChallengeTask challengeTask = challTableDAO.createChallengeTaskEntry("Post an Entry", "For your first challenge you will post an entry!",
-                                                                                  10, "the Newbie", "", false, "Other");
+            challTableDAO.createChallengeTaskEntry("Post an Entry", "For your first challenge you will post an entry!", 10, "the Newbie", "", false, "Other");
+            challTableDAO.createChallengeTaskEntry("Rock Climbing", getString(R.string.rockGymChall), 50, "Boulder King", "", false, "Sports &amp; Rec");
+            challTableDAO.createChallengeTaskEntry("Mmm Satchels", getString(R.string.satchelsChall), 35, "Satch <3-er", "", false, "Foodie");
+            challTableDAO.createChallengeTaskEntry("No Paynes No Gains", getString(R.string.paynesPrairieChall), 50, "Nature Lover", "", false, "Outdoorsy");
+            challTableDAO.createChallengeTaskEntry("Is It A Potato or Not?!", getString(R.string.potatoChall), 35, "Potato Pal", "", false, "Sightseeing Campus");
+            challTableDAO.createChallengeTaskEntry("Roads? Where we're going we don't need roads", getString(R.string.oneLessCarChall), 100, "the Transporter", "", false, "Outdoorsy");
+            challTableDAO.createChallengeTaskEntry("Work 'Em Silly Gators!", getString(R.string.gatorSportGameChall), 65, "Swamp Gator", "", false, "Sports &amp; Rec");
+            challTableDAO.createChallengeTaskEntry("Rock Show", getString(R.string.rockShowChall), 50, "the Dude", "", false, "Nightlife");
+            challTableDAO.createChallengeTaskEntry("Confusing words only please", getString(R.string.researchSemChall), 20, "the Academic", "", false, "Academic");
+            challTableDAO.createChallengeTaskEntry("let's like, go, and like, eat", getString(R.string.theTopChall), 40, "Too Mainstream", "", false, "Nightlife");
+            challTableDAO.createChallengeTaskEntry("Do You Even Lift Bro?", getString(R.string.swRecGymChall), 30, "Swole Daddy", "", false, "Sports &amp; Rec");
+
             //set status to already visited
             SharedPreferences.Editor eddy = spRef.edit();
             eddy.putBoolean("pref_key_virginal_ux", false);

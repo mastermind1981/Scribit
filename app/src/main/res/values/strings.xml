@@ -24,5 +24,15 @@
     <string name="title_activity_post_grid_adapter">PostGridAdapter</string>
     <string name="title_activity_launch">LaunchActivity</string>
     <string name="title_activity_login_activity">LoginActivity</string>
+    <string name="paynesPrairieChall">Originally belonging to the Seminole Native American tribe, Payne\'s Prairie National Park offers you a relaxing getaway, beautiful scenery, fresh air, and a chance to experience a historical landmark. Take a trip out here and, for this challenge, snap a photo atop the observatory.</string>
+    <string name="satchelsChall">Who doesn\'t love unique merchandise, delicious pizza, and hipstery vibes? Come out and have a slice (or 2 or 3 or 7) out at Satchel\'s Pizzeria. Snap a photo with friends while you\'re there and attach it here.</string>
+    <string name="potatoChall">Some people call it art, others call it the Turlington Turd, and still others call it simply \"the Potato\". Featured in all its potatoey goodness in Turlington Plaza, this campus landmark is one to visit. Your task is to either snap a photo posing (something silly) with the potato, or to film a video of yourself talking to it as people walk by.</string>
+    <string name="gatorSportGameChall">Boasting a highly successful, high octane, obscenely expensive sports program, the University of Florida hosts some fantastic sporting events. Attend a game for one of UF\'s teams. Be sure to sing along.... (ahem) \"We are the boys of Ole Florida, F L O R I D A...\"</string>
+    <string name="theTopChall">Their pork belly is fantastic, the wait staff is probably the most hipster group of people I\'ve ever met, and the desserts are always on my mind. Where? A lovely little spot downtown called the Top. Take a night out with friends, and maybe after head to the bar for drinks! You won\'t regret it.</string>
+    <string name="oneLessCarChall">This might sound crazy, but all over the world people make do without cars. For you that have one, this challenge requires you to get around for at least 7 straight days without starting up your car once. Take the bus, ride your bike, walk outside. This is actually pretty tough. Think you\'re up to it?</string>
+    <string name="rockShowChall">All over Gainesville there are crazy talented people performing. Catch a show at one of the thriving nightlife locations in town. I highly recommend Boca Fiesta and The Atlantic.</string>
+    <string name="researchSemChall">The university leans heavily on the research of its faculty. Attend a seminar that you think sounds interesting and post about it to complete this challenge.</string>
+    <string name="rockGymChall">The Gainesville Rock Gym gives you the chance to rock climb. The workout is second to none, the people are really interesting (and fit!), and it makes a great date spot. Have your picture taken atop the climbing wall!</string>
+    <string name="swRecGymChall">Few campus gyms can rival UF\'s Southwest Rec Center. There is everything from raquetball courts and basketball courts, to a huge weight room, an indoor track, and all the cardio equipment your heart desires. Go break a sweat.</string>
 
 </resources>

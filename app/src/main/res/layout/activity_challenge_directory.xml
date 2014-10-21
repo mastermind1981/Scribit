@@ -46,40 +46,11 @@
 
         </LinearLayout>
 
-    <TextView
-        android:text="Foodie"
-        android:textColor="@color/aquaGreen"
-        style="@style/CategoryHeader"
+    <fragment
+        android:id="@+id/challTaskFragment"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/foodieList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="Outdoorsy"
-        android:textColor="@color/iCantBelieveItsNotPink"
-        style="@style/CategoryHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/outdoorsyList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <TextView
-        android:text="Sports &amp; Rec"
-        android:textColor="@color/dubiousYellow"
-        style="@style/CategoryHeader"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
-
-    <ListView
-        android:id="@+id/sportsAndRecList"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:name="scribit.sjbodzo.com.scribit.ChallengeListViewFragment"
+        tools:layout="@layout/journal_entry_fragment_holder" />
 
 </LinearLayout>

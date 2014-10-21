@@ -73,8 +73,8 @@ public class ChallengeTaskDataAccessObject {
         boolean isUserMade = (isUserMadeVal == 1) ? true : false;
         String category = cursor.getString(cursor.getColumnIndex(ChallengeTaskTableHelper.COLUMN_CATEGORY));
 
-        ChallengeTask cTask = new ChallengeTask(title, points, unlockedTitle,
-                                                filepath, isUserMade, category);
+        ChallengeTask cTask = new ChallengeTask(id, title, points, unlockedTitle,
+                                                filepath, isUserMade, category, desc);
         return cTask;
     }
 
@@ -86,6 +86,7 @@ public class ChallengeTaskDataAccessObject {
         Cursor cursor = DBOnDevice.query(ChallengeOpenHelper.CHALL_TABLE_NAME,
                                          null, null, null, null, null, null);
         //iterate over tuples of Posts, adding to our container at each row
+        cursor.moveToFirst();
         while(cursor.moveToNext()) {
             ChallengeTask cTask = parseCursorRefAsChallengeTask(cursor);
             tasks.add(cTask);

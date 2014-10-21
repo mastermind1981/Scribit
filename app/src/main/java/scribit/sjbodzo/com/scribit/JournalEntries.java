@@ -29,10 +29,8 @@ public class JournalEntries extends Activity {
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
     private JournalListViewFragment jlvf;
     private JournalGridViewFragment jgvf;
-    private AdapterView<Adapter> adp;
     private FragmentManager fgm;
     private boolean hasList;
-    private Context self;
     private View v;
 
     @Override
@@ -40,7 +38,6 @@ public class JournalEntries extends Activity {
         super.onCreate(savedInstanceState);
         LayoutInflater lif = (LayoutInflater) getSystemService(LAYOUT_INFLATER_SERVICE);
         v = lif.inflate(R.layout.activity_journal_entries, null);
-        self = this;
 
         //hook in fragments to add layout representation dynamically
         jlvf = new JournalListViewFragment();
