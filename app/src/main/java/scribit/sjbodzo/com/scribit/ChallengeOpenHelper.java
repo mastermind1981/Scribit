@@ -18,6 +18,8 @@ public class ChallengeOpenHelper extends SQLiteOpenHelper {
     public static final String COLUMN_UNLOCKED = "_unlocked"; //what title did you unlock?
     public static final String COLUMN_ISUSERMADE = "_usergen"; //is this a stock task or did the user create it?
     public static final String COLUMN_CATEGORY = "_category"; //what category does this challenge belong to
+    public static final String COLUMN_LAT = "_lat"; //latitude of where challenge is to complete
+    public static final String COLUMN_LONG = "_long"; //longitude of where challenge is to complete
 
     private static final String CHALL_TABLE_CREATE_STMNT =
             "CREATE TABLE " + CHALL_TABLE_NAME +
@@ -30,6 +32,8 @@ public class ChallengeOpenHelper extends SQLiteOpenHelper {
                     COLUMN_ISUSERMADE + " INTEGER NOT NULL, " +
                     COLUMN_CATEGORY + " TEXT NOT NULL, " +
                     COLUMN_STATUS + " INTEGER NOT NULL, " +
+                    COLUMN_LAT + " REAL NOT NULL, " +
+                    COLUMN_LONG + " REAL NOT NULL, " +
                     COLUMN_UNLOCKED + " TEXT NOT NULL" +
                     ");";
 

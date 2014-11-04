@@ -13,6 +13,8 @@ public class ChallengeTask implements Parcelable {
     private String mediaFilePath; // icon referencing this challenge, use default if none set
     private boolean isUserCreated; // is this a stock challenge or did the user make it?
     private String category; //what category of challenge is this?
+    private double lat, lon; //lat and lon of coord
+    //NOTE: lat and lon of (0,0) respectively means no specific location associated with geofence
 
     public ChallengeTask() {
         ID = -1;
@@ -23,11 +25,13 @@ public class ChallengeTask implements Parcelable {
         isUserCreated = true;
         category = "";
         status = 0;
+        lat = 0;
+        lon = 0;
     }
 
     public ChallengeTask(long id, String title, int points, String unlocked,
-                         String mediaFilePath, boolean isUserCreated,
-                         String category, String description) {
+                         String mediaFilePath, boolean isUserCreated, double lat,
+                         double lon, String category, String description) {
         ID = id;
         this.title = title;
         this.points = points;
@@ -36,6 +40,8 @@ public class ChallengeTask implements Parcelable {
         this.isUserCreated = isUserCreated;
         this.category = category;
         this.description = description;
+        this.lon = lon;
+        this.lat = lat;
         status = 0;
     }
 
@@ -83,6 +89,10 @@ public class ChallengeTask implements Parcelable {
     public String getCategory() { return category; }
     public void setStatus(int i) { status = i; }
     public int getStatus() { return status; }
+    public double getLat() { return lat; }
+    public double getLon() { return lon; }
+    public void setLat(double d) { lat = d; }
+    public void setLon(double d) { lon = d; }
 
     //TODO: consider letting users define own categories of data?
     //TODO: implement Parcelable for showing Challenges in app and viewing them individually

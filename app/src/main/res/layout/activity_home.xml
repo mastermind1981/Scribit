@@ -73,7 +73,7 @@
         <TextView
             android:text="XX"
             android:textSize="18sp"
-            android:paddingLeft="55dp"
+            android:paddingLeft="68dp"
             android:layout_alignBaseline="@id/postNum_tv"
             android:layout_below="@id/username_tv"
             android:layout_toRightOf="@id/postNum_tv"

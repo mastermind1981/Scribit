@@ -5,6 +5,8 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
+import android.util.Log;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -32,30 +34,39 @@ public class ChallengeTaskDataAccessObject {
         if (!challengeTask.getIsUserCreated()) return false;
         long id = challengeTask.getID();
         DBOnDevice.delete(ChallengeOpenHelper.CHALL_TABLE_NAME,
-                ChallengeOpenHelper.COLUMN_ID + " = " + id, null);
+                          ChallengeOpenHelper.COLUMN_ID + " = " + id, null);
         return true;
     }
 
     //creates Challenge Task via Add Challenge Task Wizard page interaction using DB
     public ChallengeTask createChallengeTaskEntry(String title, String desc, int points,
                                                   String unlocked, String mediaFilePath,
+                                                  double lat, double lon,
                                                   boolean isUserCreated, String category) {
         ContentValues values = new ContentValues();
         values.put(ChallengeTaskTableHelper.COLUMN_TITLE, title);
         values.put(ChallengeTaskTableHelper.COLUMN_DESC, desc);
-        values.put(ChallengeTaskTableHelper.COLUMN_POINTS, points);
-        values.put(ChallengeTaskTableHelper.COLUMN_UNLOCKED, unlocked);
         values.put(ChallengeTaskTableHelper.COLUMN_IMGPATH, mediaFilePath);
+        values.put(ChallengeTaskTableHelper.COLUMN_POINTS, points);
         if (isUserCreated) values.put(ChallengeTaskTableHelper.COLUMN_ISUSERMADE, 1);
         else values.put(ChallengeTaskTableHelper.COLUMN_ISUSERMADE, 0);
         values.put(ChallengeTaskTableHelper.COLUMN_CATEGORY, category);
+        values.put(ChallengeTaskTableHelper.COLUMN_STATUS, 0);
+        values.put(ChallengeTaskTableHelper.COLUMN_UNLOCKED, unlocked);
+        values.put(ChallengeTaskTableHelper.COLUMN_LAT, lat);
+        values.put(ChallengeTaskTableHelper.COLUMN_LONG, lon);
 
+        //Log.e("TITLE OF POST:\t", title);
         //inherited method returns id of location in list
         long insertId = DBOnDevice.insert(ChallengeTaskTableHelper.CHALL_TABLE_NAME, null, values);
+        //Log.e("CURSOR INSERTID: \t", insertId + "");
         Cursor dbRowCursor = DBOnDevice.query(ChallengeTaskTableHelper.CHALL_TABLE_NAME,
                 null, ChallengeTaskTableHelper.COLUMN_ID + " = " + insertId,
                 null, null, null, null);
+        //Log.e("GETPOS\t", dbRowCursor.getPosition() + " ");
+        //dbRowCursor.moveToPosition((int)insertId);
         dbRowCursor.moveToFirst();
+        //Log.e("GETPOS\t", dbRowCursor.getPosition() + " ");
         ChallengeTask newChallengeTask = parseCursorRefAsChallengeTask(dbRowCursor);
         dbRowCursor.close();
         return newChallengeTask;
@@ -72,9 +83,11 @@ public class ChallengeTaskDataAccessObject {
         int isUserMadeVal = cursor.getInt(cursor.getColumnIndex(ChallengeTaskTableHelper.COLUMN_ISUSERMADE));
         boolean isUserMade = (isUserMadeVal == 1) ? true : false;
         String category = cursor.getString(cursor.getColumnIndex(ChallengeTaskTableHelper.COLUMN_CATEGORY));
+        double lat = cursor.getDouble(cursor.getColumnIndex(ChallengeTaskTableHelper.COLUMN_LAT));
+        double lon = cursor.getDouble(cursor.getColumnIndex(ChallengeTaskTableHelper.COLUMN_LONG));
 
         ChallengeTask cTask = new ChallengeTask(id, title, points, unlockedTitle,
-                                                filepath, isUserMade, category, desc);
+                                                filepath, isUserMade, lat, lon, category, desc);
         return cTask;
     }
 
