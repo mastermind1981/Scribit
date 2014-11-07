@@ -39,7 +39,7 @@ public class JournalListViewFragment extends ListFragment {
     @Override
     public void onListItemClick(ListView lv, View v, int position, long id) {
         final Post item = (Post) lv.getItemAtPosition(position);
-        Intent viewPostIntent = new Intent(c, ViewEntry.class);
+        Intent viewPostIntent = new Intent(c, ViewPostEntry.class);
         viewPostIntent.putExtra("postEntry", item);
         c.startActivity(viewPostIntent);
     }

@@ -1,17 +1,46 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
+import android.app.Fragment;
+import android.app.FragmentManager;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Spinner;
 
 
 public class ChallengeTrackerActivity extends Activity {
+    OnSpinnerFilterSelectionListener spinnerChangeListener;
+    FragmentManager fgm;
+
+    //Using interface for pattern of communicating between decoupled Activity & Fragment
+    public interface OnSpinnerFilterSelectionListener {
+        public void onSpinnerChange(String selection);
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_challenge_tracker);
+        fgm = getFragmentManager();
+        Fragment f = fgm.findFragmentByTag("challTrackListFrag");
+        try {
+            spinnerChangeListener = (OnSpinnerFilterSelectionListener)f;
+        }
+        catch (ClassCastException cle) {}
+
+        Spinner spinner = (Spinner) findViewById(R.id.chall_track_spinner);
+        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+                if (i == 0) spinnerChangeListener.onSpinnerChange("Score");
+                else if (i ==1) spinnerChangeListener.onSpinnerChange("Distance");
+            }
+            @Override
+            public void onNothingSelected(AdapterView<?> a) { }
+        });
     }
 
 

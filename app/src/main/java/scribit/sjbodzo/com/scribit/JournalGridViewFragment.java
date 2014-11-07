@@ -5,16 +5,11 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Adapter;
 import android.widget.AdapterView;
-import android.app.ListFragment;
-import android.widget.ArrayAdapter;
 import android.widget.GridView;
-import android.widget.ListView;
 
 import java.util.List;
 
@@ -53,7 +48,7 @@ public class JournalGridViewFragment extends Fragment {
             @Override
             public void onItemClick(final AdapterView<?> parent, final View view, int position, long id) {
                 final Post item = (Post) parent.getItemAtPosition(position);
-                Intent viewPostIntent = new Intent(c, ViewEntry.class);
+                Intent viewPostIntent = new Intent(c, ViewPostEntry.class);
                 viewPostIntent.putExtra("postEntry", item);
                 c.startActivity(viewPostIntent);
             }

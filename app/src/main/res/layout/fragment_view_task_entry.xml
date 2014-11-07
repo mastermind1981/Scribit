@@ -1,0 +1,97 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:orientation="vertical"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    tools:context="scribit.sjbodzo.com.scribit.ViewTaskEntry">
+
+    <RelativeLayout
+        android:paddingBottom="20dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/view_task_task_icon"
+            android:src="@drawable/trophyicon_iv"
+            android:layout_marginRight="12dp"
+            android:layout_width="100dp"
+            android:layout_height="100dp" />
+
+        <!-- MOVED TO DIALOG FRAGMENT TITLE
+        <TextView
+            android:id="@+id/view_task_title_tv"
+            android:text="TITLE"
+            android:textSize="24sp"
+            android:layout_toRightOf="@id/view_task_task_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+        -->
+
+        <TextView
+            android:id="@+id/view_task_pts_tv"
+            android:text="XX POINTS"
+            android:textSize="27sp"
+            android:layout_marginTop="18dp"
+            android:layout_toRightOf="@id/view_task_task_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <ImageView
+            android:id="@+id/view_task_unlocks_iv"
+            android:src="@drawable/ic_unlock"
+            android:layout_below="@id/view_task_pts_tv"
+            android:layout_alignLeft="@id/view_task_pts_tv"
+            android:layout_marginRight="5dp"
+            android:layout_width="22dp"
+            android:layout_height="22dp" />
+
+        <TextView
+            android:id="@+id/view_task_unlocks_tv"
+            android:text="the Noob"
+            android:textSize="21sp"
+            android:layout_below="@id/view_task_pts_tv"
+            android:layout_toRightOf="@id/view_task_unlocks_iv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/view_task_rq_tv"
+        android:textSize="25sp"
+        android:text="Requirements"
+        android:paddingBottom="12dp"
+        android:gravity="center_horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content" />
+
+    <ScrollView
+        android:layout_marginBottom="10dp"
+        android:fillViewport="false"
+        android:layout_width="fill_parent"
+        android:layout_height="180dp">
+
+        <TextView
+            android:id="@+id/view_task_rq_details_tv"
+            android:textSize="20sp"
+            android:layout_marginBottom="15dp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur malesuada tellus ligula, vitae sodales est lobortis imperdiet. Aenean lacinia diam mauris, eu finibus odio molestie sed. Aenean pharetra libero quam, vel placerat dui luctus at. Ut arcu est, pellentesque tincidunt eros eget, pulvinar rhoncus ligula. Integer nec nunc tincidunt, eleifend sem et, tincidunt odio. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Ut malesuada justo purus, eget pellentesque neque aliquam nec. Duis ut porta enim, quis pharetra nibh. Praesent laoreet, velit non blandit gravida, felis dolor aliquam velit, nec porta tellus mi eu urna.
+
+Praesent quis purus quam. Maecenas lacinia sit amet odio non ullamcorper. Donec in suscipit nisl. Vivamus egestas scelerisque tincidunt. Duis ut eleifend lectus. Morbi id lectus nibh. Mauris quis lorem sed lacus facilisis iaculis."
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+        </ScrollView>
+
+        <Button
+            android:id="@+id/view_task_got_it_button"
+            style="@style/NavActionButton"
+            android:text="GOT IT"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content" />
+
+</LinearLayout>

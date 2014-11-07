@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.Context;
 import android.content.Intent;
+import android.util.Log;
 
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
@@ -23,10 +24,14 @@ public class ChallengeTrackerIntentService extends IntentService {
     @Override
     protected void onHandleIntent(Intent intent) {
         if (intent != null) {
+            if (LocationClient.hasError(intent))
+                Log.e("ReceiveTransitionsIntentService", "Location Services error: " + Integer.toString(LocationClient.getErrorCode(intent)));
+            if (!(ACTION_USER_FOREGROUND.equals(intent.getAction()))) Log.e("scribit.sjbodzo.com.scribit", "USER ACTION MISMSATCH!");
             final String action = intent.getAction();
             if (ACTION_USER_FOREGROUND.equals(action) && !(LocationClient.hasError(intent))) {
                 int transitionType = LocationClient.getGeofenceTransition(intent);
-                if (!(transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)) return;
+                Log.e("scribit.sjbodzo.com.scribit", "TRANSITION TYPE " + transitionType + "");
+                //if (!(transitionType == Geofence.GEOFENCE_TRANSITION_ENTER)) return;
                 List<Geofence> triggerList = LocationClient.getTriggeringGeofences(intent);
                 String[] triggerIds = new String[triggerList.size()];
                 for (int i = 0; i < triggerIds.length; i++) {
@@ -34,6 +39,7 @@ public class ChallengeTrackerIntentService extends IntentService {
                     triggerIds[i] = triggerList.get(i).getRequestId();
                 }
 
+                Log.e("scribit.sjbodzo.com.scribit", " NOTIFYING THE USER!");
                 Notification.Builder notificationBuilder = new Notification.Builder(this)
                                                                  .setSmallIcon(R.drawable.trophyicon_iv)
                                                                  .setContentTitle("Scribit")

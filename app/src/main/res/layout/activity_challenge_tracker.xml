@@ -1,47 +1,40 @@
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="#00000000"
-        tools:context="scribit.sjbodzo.com.scribit.ChallengeTrackerActivity">
+<?xml version="1.0" encoding="utf-8"?>
 
-    <scribit.sjbodzo.com.scribit.ChallengeCategoryWidget
-        android:id="@+id/foodieCategoryWidget"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:orientation="vertical" android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <LinearLayout
+        android:gravity="center_horizontal"
+        android:layout_marginBottom="15dp"
+        android:orientation="horizontal"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content">
+
+        <TextView
+            android:layout_marginTop="20dp"
+            android:id="@+id/chall_track_sortby_tv"
+            android:textSize="25sp"
+            android:text="Filter challenges by"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        <Spinner
+            android:layout_marginTop="20dp"
+            android:id="@+id/chall_track_spinner"
+            android:entries="@array/challtrackspinnerarray"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    <fragment
+        android:id="@+id/challTrackerListFragment"
+        android:tag="challTrackListFrag"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:strokeColor="0xFFAA1616"
-        app:hasTextComponent="true"
-        app:categoryName="Foodie"
-        app:categoryDesc="@string/foodie_desc"
-        app:radius="70" />
+        android:name="scribit.sjbodzo.com.scribit.ChallengeTrackerListViewFragment"
+        tools:layout="@layout/chall_tracker_fragment_entry" />
 
-    <scribit.sjbodzo.com.scribit.ChallengeCategoryWidget
-        android:id="@+id/outdoorsyCategoryWidget"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:strokeColor="0xFF24822D"
-        app:hasTextComponent="true"
-        app:categoryName="Outdoorsy"
-        app:categoryDesc="@string/outdoorsy_desc"
-        android:layout_below="@id/foodieCategoryWidget"
-        app:radius="70" />
-
-    <scribit.sjbodzo.com.scribit.ChallengeCategoryWidget
-        android:id="@+id/sportsAndRecCategoryWidget"
-        android:layout_below="@id/outdoorsyCategoryWidget"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:layout_marginLeft="10dp"
-        app:strokeColor="0xFF1A306D"
-        app:hasTextComponent="true"
-        app:categoryName="Sports and Rec"
-        app:categoryDesc="@string/sportsandrec_desc"
-        app:radius="70" />
-
-</RelativeLayout>
+</LinearLayout>

@@ -93,6 +93,7 @@ public class ChallengeTask implements Parcelable {
     public double getLon() { return lon; }
     public void setLat(double d) { lat = d; }
     public void setLon(double d) { lon = d; }
+    public String getDescription() { return description; }
 
     //TODO: consider letting users define own categories of data?
     //TODO: implement Parcelable for showing Challenges in app and viewing them individually

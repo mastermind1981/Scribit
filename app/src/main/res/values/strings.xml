@@ -34,5 +34,7 @@
     <string name="researchSemChall">The university leans heavily on the research of its faculty. Attend a seminar that you think sounds interesting and post about it to complete this challenge.</string>
     <string name="rockGymChall">The Gainesville Rock Gym gives you the chance to rock climb. The workout is second to none, the people are really interesting (and fit!), and it makes a great date spot. Have your picture taken atop the climbing wall!</string>
     <string name="swRecGymChall">Few campus gyms can rival UF\'s Southwest Rec Center. There is everything from raquetball courts and basketball courts, to a huge weight room, an indoor track, and all the cardio equipment your heart desires. Go break a sweat.</string>
+    <string name="title_activity_view_task_entry">ViewTaskEntry</string>
+    <string name="title_activity_challenge_tracker_adapter">ChallengeTrackerAdapter</string>
 
 </resources>

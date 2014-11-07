@@ -5,4 +5,5 @@
     <color name="dubiousYellow">#F7FE2E</color>
     <color name="gatorOrange">#FF8000</color>
     <color name="royalPurpleBlue">#231F96</color>
+    <color name="challengeCompletedEntryColor">#7fffd4</color>
 </resources>

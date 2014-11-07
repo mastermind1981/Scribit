@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-          xmlns:tools="http://schemas.android.com/tools"
-          package="scribit.sjbodzo.com.scribit" >
+    xmlns:tools="http://schemas.android.com/tools"
+    package="scribit.sjbodzo.com.scribit" >
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -9,8 +9,7 @@
     <uses-permission android:name="android.permission.LOCATION_HARDWARE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
-    <uses-sdk
-        tools:node="replace" />
+    <uses-sdk tools:node="replace" />
 
     <application
         android:allowBackup="true"
@@ -28,9 +27,9 @@
             </intent-filter>
         </activity>
 
-        <meta-data android:name="com.google.android.gms.version"
-                   android:value="@integer/google_play_services_version" />
-
+        <meta-data
+            android:name="com.google.android.gms.version"
+            android:value="@integer/google_play_services_version" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/app_id" />
@@ -60,10 +59,9 @@
             android:label="SettingsActivity" >
         </activity>
         <activity
-            android:name=".ViewEntry"
+            android:name=".ViewPostEntry"
             android:label="@string/title_activity_view_entry" >
         </activity>
-
         <activity
             android:name=".ChallengeDirectory"
             android:label="@string/title_activity_challenge_directory" >
@@ -73,6 +71,15 @@
             android:name=".ChallengeTrackerIntentService"
             android:exported="false" >
         </service>
+
+        <activity
+            android:name=".ViewTaskEntry"
+            android:label="@string/title_activity_view_task_entry" >
+        </activity>
+        <activity
+            android:name=".ChallengeTrackerAdapter"
+            android:label="@string/title_activity_challenge_tracker_adapter" >
+        </activity>
     </application>
 
 </manifest>

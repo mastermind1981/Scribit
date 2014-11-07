@@ -1,12 +1,19 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.PendingIntent;
+import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.content.SharedPreferences;
+import android.location.Location;
+import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
+import android.text.TextUtils;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -23,14 +30,18 @@ import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.LocationClient;
+import com.google.android.gms.location.LocationListener;
+import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationStatusCodes;
+import com.google.android.gms.maps.LocationSource;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class LoginActivity extends Activity implements GooglePlayServicesClient.OnConnectionFailedListener,
                                                        GooglePlayServicesClient.ConnectionCallbacks,
-                                                       LocationClient.OnAddGeofencesResultListener {
+                                                       LocationClient.OnAddGeofencesResultListener,
+                                                       LocationListener {
 
     public static final String PREFS_SETTINGS = "TheSettingsFileYall";
     private PostsDataAccessObject postsTableDAO;
@@ -40,6 +51,13 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     private PendingIntent geofenceRequestIntent;
     public enum REQUEST_TYPE {ADD}
     private REQUEST_TYPE requestType;
+    private LocationRequest locReq;
+
+    private static final int MILLISECONDS_PER_SECOND = 1000;
+    public static final int UPDATE_INTERVAL_IN_SECONDS = 3;
+    private static final long UPDATE_INTERVAL = MILLISECONDS_PER_SECOND * UPDATE_INTERVAL_IN_SECONDS;
+    private static final int FASTEST_INTERVAL_IN_SECONDS = 1;
+    private static final long FASTEST_INTERVAL = MILLISECONDS_PER_SECOND * FASTEST_INTERVAL_IN_SECONDS;
 
     //TODO: better design for service logic that triggers geofence tracking
     //TODO: create check of preference before enabling geofence tracking
@@ -71,6 +89,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
         firstLaunchCheck();
 
         //attempt to activate geofences
+        createLocationRequest();
         addGeofences();
     }
 
@@ -80,6 +99,13 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
         return PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT);
     }
 
+    private void createLocationRequest() {
+        locReq = LocationRequest.create();
+        locReq.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+        locReq.setInterval(UPDATE_INTERVAL);
+        locReq.setFastestInterval(FASTEST_INTERVAL);
+    }
+
     /*
   * Provide the implementation of ConnectionCallbacks.onConnected()
   * Once the connection is available, send a request to add the
@@ -87,13 +113,40 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
   */
     @Override
     public void onConnected(Bundle dataBundle) {
-        switch (requestType) {
-            case ADD :
-                geofenceRequestIntent = getTransitionPendingIntent();
-                locationClient.addGeofences(parseChallengeTasksAsGeofencesList(),
-                                            geofenceRequestIntent, this);
+        boolean hasLocServices = isLocationEnabled(this);
+        if (!hasLocServices) {
+            triggerPromptForGPS();
+        }
+        else {
+            locationClient.requestLocationUpdates(locReq, this);
+            Location l = locationClient.getLastLocation();
+            String msg = "Updated Location: " +
+                    Double.toString(l.getLatitude()) + "," +
+                    Double.toString(l.getLongitude());
+            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            switch (requestType) {
+                case ADD:
+                    geofenceRequestIntent = getTransitionPendingIntent();
+                    locationClient.addGeofences(parseChallengeTasksAsGeofencesList(),
+                            geofenceRequestIntent, this);
+            }
         }
     }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        boolean hasLocServices = isLocationEnabled(this);
+        if (!hasLocServices) {
+            triggerPromptForGPS();
+        }
+
+        // Report to the UI that the location was updated
+        String msg = "Updated Location: " +
+                Double.toString(location.getLatitude()) + "," +
+                Double.toString(location.getLongitude());
+        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+    }
+
     @Override
     public void onAddGeofencesResult(int statusCode, String[] geofenceRequestIds) {
         // Here is where we check if our geofences were added correctly. Check statusCode
@@ -102,10 +155,47 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
             Toast.makeText(this, "Geofences added successfully!", Toast.LENGTH_SHORT).show();
         } else {
             Toast.makeText(this, "Geofences FAILED to add!!!!!", Toast.LENGTH_SHORT).show();
+            if (LocationStatusCodes.GEOFENCE_NOT_AVAILABLE == statusCode) {
+                boolean hasLocServices = isLocationEnabled(this);
+                if (!hasLocServices) {
+                    triggerPromptForGPS();
+                }
+            }
         }
         // Turn off the in progress flag and disconnect the client
         isRequestCurrentlyInProgress = false;
         locationClient.disconnect();
+    }
+
+    public void triggerPromptForGPS() {
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Location Services Not Setup");
+        builder.setMessage("It appears that the GPS service is not enabled. Please check your settings.");
+        builder.setPositiveButton("Show Me", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialogInterface, int i) {
+                startActivity(new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS));
+            }
+        });
+        builder.setNegativeButton("No", null);
+        builder.create().show();
+    }
+
+    public static boolean isLocationEnabled(Context context) {
+        int locationMode = 0;
+        String locationProviders;
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT){
+            try {
+                locationMode = Settings.Secure.getInt(context.getContentResolver(), Settings.Secure.LOCATION_MODE);
+
+            } catch (Settings.SettingNotFoundException e) {
+                e.printStackTrace();
+            }
+            return locationMode != Settings.Secure.LOCATION_MODE_OFF;
+        } else {
+            locationProviders = Settings.Secure.getString(context.getContentResolver(), Settings.Secure.LOCATION_PROVIDERS_ALLOWED);
+            return !TextUtils.isEmpty(locationProviders);
+        }
     }
 
     @Override
@@ -123,6 +213,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
         } else {
             int errorCode = connectionResult.getErrorCode();
             Toast.makeText(this, "onConnectionFailed, ERROR CODE: " + errorCode, Toast.LENGTH_SHORT).show();
+            //TODO: treat individual error codes appropriately, ex: if location services turned off prompt user
         }
     }
 
@@ -205,6 +296,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     //Parse ChallengeTasks objs to yield Geofences from them
     private List<Geofence> parseChallengeTasksAsGeofencesList() {
         List<Geofence> list = new ArrayList<Geofence>();
+        if(challTableDAO == null) challTableDAO = new ChallengeTaskDataAccessObject(this);
         challTableDAO.open();
         List<ChallengeTask> challengeTaskList = challTableDAO.getAllThemThereChallenges();
         challTableDAO.close();
@@ -213,7 +305,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
         double latitude, longitude;
         Geofence geographicChallengeTaskFence;
         float radius = 1610; //in meters & ~1610 meters in a mile
-        final int transitionStep = Geofence.GEOFENCE_TRANSITION_ENTER;
+        final int transitionStep = Geofence.GEOFENCE_TRANSITION_ENTER | Geofence.GEOFENCE_TRANSITION_DWELL;
         final long duration = 180000; //in milliseconds & 180000 ~= 3 minutes
         String requestID; //uniquely IDs the geofence, will use unique ID in SQLITE
         Geofence.Builder builder = new Geofence.Builder();
@@ -226,6 +318,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
             requestID = "geofence_id_" + cTask.getID();
             geographicChallengeTaskFence = builder.setRequestId(requestID)
                                                    .setTransitionTypes(transitionStep)
+                                                   .setLoiteringDelay(1)
                                                    .setCircularRegion(latitude, longitude, radius)
                                                    .setExpirationDuration(duration)
                                                    .build();

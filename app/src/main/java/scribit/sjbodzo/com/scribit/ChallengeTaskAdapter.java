@@ -1,12 +1,14 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import java.util.List;
@@ -30,12 +32,14 @@ public class ChallengeTaskAdapter extends ArrayAdapter<ChallengeTask>  {
         TextView points = (TextView) rowView.findViewById(R.id.challTaskadapter_points_tv);
         TextView title = (TextView) rowView.findViewById(R.id.challTaskadapter_title_tv);
         TextView category = (TextView) rowView.findViewById(R.id.challTaskadapter_cat_tv);
-        ImageView doneIcon = (ImageView) rowView.findViewById(R.id.challTaskadapter_clipboard_done_iv);
-        ImageView incompleteIcon = (ImageView) rowView.findViewById(R.id.challTaskadapter_clipboard_inc_iv);
+        RelativeLayout layoutHost = (RelativeLayout) rowView.findViewById(R.id.rel_layout_chall_task);
+        //ImageView doneIcon = (ImageView) rowView.findViewById(R.id.challTaskadapter_clipboard_done_iv);
+        //ImageView incompleteIcon = (ImageView) rowView.findViewById(R.id.challTaskadapter_clipboard_inc_iv);
 
         //show icon for whether or not challenge is done yet
-        if (task.getStatus() == 1) doneIcon.setVisibility(View.VISIBLE);
-        else incompleteIcon.setVisibility(View.VISIBLE);
+        if (task.getStatus() == 1)
+            layoutHost.setBackgroundColor(context.getResources().getColor(R.color.challengeCompletedEntryColor));
+        //else incompleteIcon.setVisibility(View.VISIBLE);
 
         Log.e("POINTS?" , task.getPoints() + "\t");
 
