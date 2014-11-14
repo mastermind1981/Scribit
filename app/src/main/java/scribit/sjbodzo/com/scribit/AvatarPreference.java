@@ -1,6 +1,7 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.TypedArray;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -26,6 +27,13 @@ public class AvatarPreference extends Preference {
         super(c, aSet);
         this.c = c;
         setLayoutResource(R.layout.pref_avatar_layout);
+
+
+        SharedPreferences spRef = c.getSharedPreferences("TheSettingsFileYall", 0);
+        String path = spRef.getString("pref_key_avatar", "R.drawable.ic_avatar");
+        if (!path.equals("R.drawable.ic_avatar")) {
+            
+        }
     }
 
     @Override

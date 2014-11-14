@@ -46,6 +46,10 @@ public class PostsDataAccessObject {
                 PostOpenHelper.COLUMN_ID + " = " + id, null);
     }
 
+    public void removeAllPosts() {
+        DBOnDevice.delete(PostOpenHelper.POSTS_TABLE_NAME, null, null);
+    }
+
     //creates Post object via wizard interaction in AddJournalEntry within DB
     public Post createJournalPost(String title, String desc, double gps_x,
                                   double gps_y, String imgpath, String date,

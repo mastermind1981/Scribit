@@ -1,14 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
     <PreferenceCategory
-        android:title="Account"
+        android:title="User Account"
         android:key="pref_key_acct_settings">
         <CheckBoxPreference
             android:id="@+id/firsttimer"
             android:visibility="gone"
             android:key="pref_key_virginal_ux"
-            android:summary="Toggle for first time user of the application."
+            android:summary="If checked this is your first time running the application."
             android:title="1st time user?"
             android:defaultValue="true" />
         <CheckBoxPreference
@@ -18,13 +19,15 @@
             android:summary="If checked, you prefer to see your journal entries in a list format, as opposed to a grid format. If unchecked, then the opposite holds true."
             android:title="List or Grid?"
             android:defaultValue="true" />
+        <!--
         <EditTextPreference
             android:key="pref_key_username"
             android:summary="Your username within the app"
             android:title="Username"
-            android:defaultValue="false"
+            android:defaultValue="the User"
             android:clickable="false"
             android:editable="false" />
+        -->
         <ListPreference
             android:key="pref_key_titlename"
             android:summary="Select your title from unlocked challenge rewards!"
@@ -40,7 +43,7 @@
             android:key="pref_key_avatar" />
         </PreferenceCategory>
 
-        <PreferenceCategory
+    <PreferenceCategory
             android:title="Data Privacy"
             android:key="pref_key_data_privacy">
         <Preference
@@ -53,4 +56,5 @@
             android:summary="Choose whether or not to allow the app to grab information from photos or GPS, such as location and timestamps."
             android:title="Use GPS" />
     </PreferenceCategory>
+
 </PreferenceScreen>

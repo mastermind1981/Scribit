@@ -64,7 +64,6 @@ public class ViewPostEntry extends Activity {
 
         //TODO: add logic to show if is a challenge
         //TODO: add logic to show gps location information
-        //TODO: add logic to handle displaying of media (if any)
         //TODO: hook in actionbar item to edit posting
 
         //Show the view

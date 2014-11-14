@@ -28,6 +28,12 @@ public class Home extends Activity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
         LayoutInflater lif = getLayoutInflater();
         View v = lif.inflate(R.layout.activity_home, null);
 
@@ -43,16 +49,16 @@ public class Home extends Activity {
 
         //todo: Set title dynamically to one set in preferences
         TextView titleTV = (TextView) v.findViewById(R.id.titleName_tv);
-        SharedPreferences sp = getSharedPreferences(JournalEntries.PREFS_SETTINGS, 0);
-        String listPrefStr = sp.getString("pref_key_titlename", "the Noodle");
+        SharedPreferences sp = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
+        String listPrefStr = sp.getString("pref_key_titlename", "the Big Deal");
         titleTV.setText(listPrefStr);
 
         //query to find and num challenges completed
         ChallengeOpenHelper ChallengeTaskTableHelper = new ChallengeOpenHelper(this);
         SQLiteDatabase dB = ChallengeTaskTableHelper.getReadableDatabase();
         Cursor c = dB.query(ChallengeTaskTableHelper.CHALL_TABLE_NAME,
-                 null, ChallengeTaskTableHelper.COLUMN_STATUS + " = " + 1,
-                 null, null, null, null);
+                null, ChallengeTaskTableHelper.COLUMN_STATUS + " = " + 1,
+                null, null, null, null);
         int numCompletedChalls = c.getCount();
         TextView chCompNumTV = (TextView) v.findViewById(R.id.challengeNum_tv);
         chCompNumTV.setText(numCompletedChalls + "");
@@ -61,13 +67,12 @@ public class Home extends Activity {
         PostOpenHelper PostTableOpenHelper = new PostOpenHelper(this);
         SQLiteDatabase pdB = PostTableOpenHelper.getReadableDatabase();
         Cursor pc = pdB.query(PostTableOpenHelper.POSTS_TABLE_NAME,
-                              null, null, null, null, null, null);
+                null, null, null, null, null, null);
         int numPostsInJournal = pc.getCount();
         TextView tvPostNum = (TextView) v.findViewById(R.id.postNum_tv);
         tvPostNum.setText(numPostsInJournal + "");
 
         ImageView avView = (ImageView) v.findViewById(R.id.avatar_iv);
-
         SharedPreferences spRef = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
         String avFileRef = spRef.getString("pref_key_avatar", "R.drawable.ic_avatar"); //drawable ref, else path to media on device
         if (avFileRef.equals("R.drawable.ic_avatar")) avView.setImageDrawable(getResources().getDrawable(R.drawable.ic_avatar));
@@ -84,12 +89,8 @@ public class Home extends Activity {
                 avView.setImageDrawable(getResources().getDrawable(R.drawable.ic_avatar));
             }
         }
+        v.invalidate();
         setContentView(v);
-
-        /**
-        Button optionsButton = (Button) findViewById(R.id.options_button);
-        optionsButton.setOnClickListener(launchOptionsView);
-        **/
     }
 
     View.OnClickListener launchJournalMainView = new View.OnClickListener() {

@@ -38,6 +38,23 @@ public class ChallengeTaskDataAccessObject {
         return true;
     }
 
+    //returns String[] of all unlocked titles
+    public String[] getUnlockedTitles() {
+        Cursor dbCursy = DBOnDevice.query(ChallengeTaskTableHelper.CHALL_TABLE_NAME,
+                                          new String[] {ChallengeTaskTableHelper.COLUMN_UNLOCKED},
+                                          ChallengeTaskTableHelper.COLUMN_STATUS + " = 1",
+                                          null, null, null, null);
+        dbCursy.moveToFirst();
+        String[] arr = new String[dbCursy.getCount()+1];
+        int i = 0;
+        while(dbCursy.moveToNext()) {
+            arr[i] = dbCursy.getString(dbCursy.getColumnIndex(ChallengeTaskTableHelper.COLUMN_UNLOCKED));
+            i++;
+        } dbCursy.close();
+        arr[i] = "the Noodle";
+        return arr;
+    }
+
     //creates Challenge Task via Add Challenge Task Wizard page interaction using DB
     public ChallengeTask createChallengeTaskEntry(String title, String desc, int points,
                                                   String unlocked, String mediaFilePath,
@@ -56,7 +73,6 @@ public class ChallengeTaskDataAccessObject {
         values.put(ChallengeTaskTableHelper.COLUMN_LAT, lat);
         values.put(ChallengeTaskTableHelper.COLUMN_LONG, lon);
 
-        //Log.e("TITLE OF POST:\t", title);
         //inherited method returns id of location in list
         long insertId = DBOnDevice.insert(ChallengeTaskTableHelper.CHALL_TABLE_NAME, null, values);
         //Log.e("CURSOR INSERTID: \t", insertId + "");
