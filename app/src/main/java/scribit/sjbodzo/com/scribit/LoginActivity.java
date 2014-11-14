@@ -249,6 +249,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     }
 
     //TODO: incorporate inviting tutorial to first time app user?
+
     public void firstLaunchCheck() {
         SharedPreferences spRef = getSharedPreferences(PREFS_SETTINGS, 0);
         boolean isFirstTimeUser = spRef.getBoolean("pref_key_virginal_ux", true);

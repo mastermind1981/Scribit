@@ -43,6 +43,10 @@ public class ChallengeTrackerActivity extends Activity {
         });
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

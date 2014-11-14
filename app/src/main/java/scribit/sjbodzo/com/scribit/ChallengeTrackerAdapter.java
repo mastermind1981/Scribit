@@ -1,7 +1,10 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.Intent;
 import android.content.IntentSender;
 import android.location.Location;
 import android.os.Bundle;
@@ -52,10 +55,32 @@ public class ChallengeTrackerAdapter extends ArrayAdapter<ChallengeTask> impleme
 
     @Override
     public void onConnected(Bundle dataBundle) {
-        location = locationClient.getLastLocation();
-        notifyDataSetChanged();
-        Log.e("LOCATION FOUND!!!! ", Double.toString(location.getLatitude()) + " " + Double.toString(location.getLongitude()));
-        Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+        boolean hasLocServices = LoginActivity.isLocationEnabled(context);
+        if (!hasLocServices) {
+            AlertDialog.Builder builder = new AlertDialog.Builder(context);
+            builder.setTitle("Location Services Not Setup");
+            builder.setMessage("It appears that the GPS service is not enabled. Please check your settings.");
+            builder.setPositiveButton("Show Me", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(android.provider.Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                    intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_WHEN_TASK_RESET);
+                    context.startActivity(intent);
+                }
+            });
+            builder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    Intent intent = new Intent(context, Home.class);
+                    context.startActivity(intent);
+                }
+            });
+            builder.create().show();
+        }
+        else {
+            location = locationClient.getLastLocation();
+            notifyDataSetChanged();
+            Log.e("LOCATION FOUND!!!! ", Double.toString(location.getLatitude()) + " " + Double.toString(location.getLongitude()));
+            Toast.makeText(context, "Connected", Toast.LENGTH_SHORT).show();
+        }
     }
 
     @Override

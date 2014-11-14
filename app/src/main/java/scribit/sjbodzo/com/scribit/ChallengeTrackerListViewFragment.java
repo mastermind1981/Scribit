@@ -1,10 +1,12 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.app.FragmentManager;
 import android.app.FragmentTransaction;
 import android.app.ListFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentSender;
 import android.database.Cursor;
@@ -63,12 +65,18 @@ public class ChallengeTrackerListViewFragment extends ListFragment
 
         @Override
         public void onConnected(Bundle dataBundle) {
-            l = lc.getLastLocation();
+            boolean hasLocServices = LoginActivity.isLocationEnabled(getActivity());
+            if (!hasLocServices) {}
+            else l = lc.getLastLocation();
         }
 
         @Override
         public void onDisconnected() {
             Toast.makeText(c, "Disconnected. Please re-connect.", Toast.LENGTH_SHORT).show();
+        }
+
+        public void reconnectClient() {
+            lc.connect();
         }
 
         @Override
