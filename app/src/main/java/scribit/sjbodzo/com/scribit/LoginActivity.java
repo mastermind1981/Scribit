@@ -19,12 +19,14 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.facebook.Request;
 import com.facebook.Response;
 import com.facebook.Session;
 import com.facebook.SessionState;
+import com.facebook.UiLifecycleHelper;
 import com.facebook.model.GraphUser;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesClient;
@@ -52,6 +54,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     public enum REQUEST_TYPE {ADD}
     private REQUEST_TYPE requestType;
     private LocationRequest locReq;
+    private UiLifecycleHelper uiHelper;
 
     private static final int MILLISECONDS_PER_SECOND = 1000;
     public static final int UPDATE_INTERVAL_IN_SECONDS = 3;
@@ -65,6 +68,19 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
+        //create listener to respond to facebook lifecycle changes
+        Session.StatusCallback callback = new Session.StatusCallback() {
+            @Override
+            public void call(Session session, SessionState state, Exception exception) {
+                onSessionStateChange(session, state, exception);
+            }
+        };
+        //hook listener into uiHelper obj (Facebook's management obj)
+        uiHelper = new UiLifecycleHelper(this, callback);
+        uiHelper.onCreate(savedInstanceState);
+
+        //for handling async geo tracking
         isRequestCurrentlyInProgress = false;
         setContentView(R.layout.activity_launch);
 
@@ -72,7 +88,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
         FBLoginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                launchFacebookLogin();
+                launchFacebookLogin(true);
             }
         });
 
@@ -87,10 +103,24 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
 
         //perform necessary checks if this is first app load
         firstLaunchCheck();
+    }
 
-        //attempt to activate geofences
-        createLocationRequest();
-        addGeofences();
+    //deals w/ handoff from Facebook after login attempted
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        uiHelper.onActivityResult(requestCode, resultCode, data);
+    }
+
+    //Method for session state changes in application
+    private void onSessionStateChange(Session session, SessionState state, Exception exception) {
+        if (state.isOpened()) {
+            Toast.makeText(this, "Logged in!!!!!!", Toast.LENGTH_SHORT);
+            Intent i = new Intent(this, Home.class);
+            startActivity(i);
+        } else if (state.isClosed()) {
+            Toast.makeText(this, "Logged out!!!!!!", Toast.LENGTH_SHORT);
+        }
     }
 
     //Triggered when geofence transition happens, fires IntentService
@@ -114,10 +144,13 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     @Override
     public void onConnected(Bundle dataBundle) {
         boolean hasLocServices = isLocationEnabled(this);
-        if (!hasLocServices) {
+        //Check if first launch of app or not
+        SharedPreferences sp = getSharedPreferences(PREFS_SETTINGS, 0);
+        boolean isFirstLaunch = sp.getBoolean("pref_key_virginal_ux", false);
+        if (!hasLocServices && isFirstLaunch) {
             triggerPromptForGPS();
         }
-        else {
+        else if (hasLocServices) {
             locationClient.requestLocationUpdates(locReq, this);
             Location l = locationClient.getLastLocation();
             String msg = "Updated Location: " +
@@ -285,12 +318,16 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
             eddy.putBoolean("pref_key_virginal_ux", false);
             eddy.apply();
 
-            //postsTableDAO.close();
-            //challTableDAO.close();
+            //attempt to activate geofences
+            createLocationRequest();
+            addGeofences();
         }
         else {
-            Intent i = new Intent(getApplicationContext(), Home.class);
-            startActivity(i);
+            //attempt to activate geofences
+            createLocationRequest();
+            addGeofences();
+
+            launchFacebookLogin(false);
         }
     }
 
@@ -336,7 +373,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     }
     **/
 
-    public void launchFacebookLogin() {
+    public void launchFacebookLogin(final boolean isFirstTime) {
         Session.openActiveSession(this, true, new Session.StatusCallback() {
             // callback when session changes state
             @Override
@@ -348,8 +385,40 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
                         @Override
                         public void onCompleted(GraphUser user, Response response) {
                             if (user != null) {
+                                Toast.makeText(getApplicationContext(), "User " + user.getName() + " is now logged in. Nice!", Toast.LENGTH_LONG);
                                 Log.e("USERNAME: ", user.getName());
-                                AccountUtilities.grabAvatarFromFB(user.getId(), getApplicationContext());
+                                if(isFirstTime) {
+                                    new AccountUtilities().grabAvatarFromFB(user.getId(), getApplicationContext());
+                                    SharedPreferences sp = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
+                                    SharedPreferences.Editor sped = sp.edit();
+                                    sped.putString("pref_key_username", user.getName()).apply();
+
+                                    //Now lets modify the UI so that it shows to the user we're logged in ok!
+                                    Button FBLoginButton = (Button) findViewById(R.id.launchpage_loginButton);
+                                    Button noFBLoginButton = (Button) findViewById(R.id.launchpage_noFBloginButton);
+                                    FBLoginButton.setVisibility(View.GONE);
+                                    noFBLoginButton.setVisibility(View.GONE);
+                                    TextView launchMainText = (TextView) findViewById(R.id.app_main_pitch_tv);
+                                    TextView launchTapText = (TextView) findViewById(R.id.tap_button_fb_tv);
+                                    launchMainText.setVisibility(View.GONE);
+                                    launchTapText.setText("Nice! It looks like your login was successful. Go ahead and tap below so we can get started");
+
+                                    //Create button to move fwd...
+                                    Button continueButton = (Button) findViewById(R.id.buttonToContinue);
+                                    continueButton.setText("Get Started");
+                                    continueButton.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View view) {
+                                            Intent i = new Intent(getApplicationContext(), Home.class);
+                                            startActivity(i);
+                                        }
+                                    });
+                                    continueButton.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    Intent i = new Intent(getApplicationContext(), Home.class);
+                                    startActivity(i);
+                                }
                             }
                         }
                     }).executeAsync();

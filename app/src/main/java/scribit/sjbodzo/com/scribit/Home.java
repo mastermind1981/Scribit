@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -46,12 +47,17 @@ public class Home extends Activity {
         settingsButton.setOnClickListener(launchOptionsView);
         Button challengesDirViewButton = (Button) v.findViewById(R.id.challengeDirViewButton);
         challengesDirViewButton.setOnClickListener(launchChallengeDirView);
+        TextView usernameText = (TextView) v.findViewById(R.id.username_tv);
 
-        //todo: Set title dynamically to one set in preferences
+        //dynamically set text to one set in prefs
         TextView titleTV = (TextView) v.findViewById(R.id.titleName_tv);
         SharedPreferences sp = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
         String listPrefStr = sp.getString("pref_key_titlename", "the Big Deal");
         titleTV.setText(listPrefStr);
+
+        //populate username with one snatched from Facebook, otherwise default to saying journaler
+        String usernamePref = sp.getString("pref_key_username", "JOURNALER");
+        usernameText.setText(usernamePref);
 
         //query to find and num challenges completed
         ChallengeOpenHelper ChallengeTaskTableHelper = new ChallengeOpenHelper(this);
@@ -75,6 +81,7 @@ public class Home extends Activity {
         ImageView avView = (ImageView) v.findViewById(R.id.avatar_iv);
         SharedPreferences spRef = getSharedPreferences(LoginActivity.PREFS_SETTINGS, 0);
         String avFileRef = spRef.getString("pref_key_avatar", "R.drawable.ic_avatar"); //drawable ref, else path to media on device
+        Log.d("HOME PRINT", avFileRef);
         if (avFileRef.equals("R.drawable.ic_avatar")) avView.setImageDrawable(getResources().getDrawable(R.drawable.ic_avatar));
         else {
             try {

@@ -3,6 +3,7 @@
     android:layout_width="match_parent"
     android:orientation="vertical"
     android:layout_height="match_parent"
+    android:id="@+id/loginActivity_root"
     android:paddingLeft="@dimen/activity_horizontal_margin"
     android:paddingRight="@dimen/activity_horizontal_margin"
     android:paddingTop="@dimen/activity_vertical_margin"
@@ -16,6 +17,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/app_main_pitch_tv"
         android:paddingTop="15dp"
         android:paddingBottom="15dp"
         style="@style/EntryTitle"
@@ -25,6 +27,7 @@
         android:layout_height="wrap_content" />
 
     <TextView
+        android:id="@+id/tap_button_fb_tv"
         android:paddingTop="13dp"
         android:paddingBottom="15dp"
         style="@style/EntryTitle"
@@ -32,6 +35,16 @@
         android:text="If you do not wish to login using Facebook at this time, tap the button below continue without using Facebook."
         android:layout_width="fill_parent"
         android:layout_height="wrap_content" />
+
+    <Button
+        android:layout_marginTop="13dp"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/buttonToContinue"
+        android:visibility="gone"
+        style="@style/NavActionButton"
+        android:textSize="17sp"
+        />
 
     <RelativeLayout
         android:layout_width="fill_parent"

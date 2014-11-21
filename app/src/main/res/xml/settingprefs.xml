@@ -19,15 +19,13 @@
             android:summary="If checked, you prefer to see your journal entries in a list format, as opposed to a grid format. If unchecked, then the opposite holds true."
             android:title="List or Grid?"
             android:defaultValue="true" />
-        <!--
         <EditTextPreference
             android:key="pref_key_username"
             android:summary="Your username within the app"
             android:title="Username"
-            android:defaultValue="the User"
+            android:defaultValue="Journaler"
             android:clickable="false"
             android:editable="false" />
-        -->
         <ListPreference
             android:key="pref_key_titlename"
             android:summary="Select your title from unlocked challenge rewards!"
