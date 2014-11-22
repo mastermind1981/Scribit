@@ -38,6 +38,24 @@ public class ChallengeTaskDataAccessObject {
         return true;
     }
 
+    //Convenience method to mark a Challenge Task as completed in the DB, (remember task.status = 1 means completed)
+    public void setTaskAsComplete(ChallengeTask task) {
+        ContentValues cv = new ContentValues();
+        cv.put(ChallengeTaskTableHelper.COLUMN_STATUS, "1");
+        cv.put(ChallengeTaskTableHelper.COLUMN_TITLE, task.getTitle());
+        cv.put(ChallengeTaskTableHelper.COLUMN_DESC, task.getDescription());
+        cv.put(ChallengeTaskTableHelper.COLUMN_IMGPATH, task.getMediaFilePath());
+        cv.put(ChallengeTaskTableHelper.COLUMN_POINTS, task.getPoints());
+        if (task.getIsUserCreated()) cv.put(ChallengeTaskTableHelper.COLUMN_ISUSERMADE, 1);
+        else cv.put(ChallengeTaskTableHelper.COLUMN_ISUSERMADE, 0);
+        cv.put(ChallengeTaskTableHelper.COLUMN_CATEGORY, task.getCategory());
+        cv.put(ChallengeTaskTableHelper.COLUMN_UNLOCKED, task.getUnlocked());
+        cv.put(ChallengeTaskTableHelper.COLUMN_LAT, task.getLat());
+        cv.put(ChallengeTaskTableHelper.COLUMN_LONG, task.getLon());
+        DBOnDevice.update(ChallengeTaskTableHelper.CHALL_TABLE_NAME, cv,
+                          ChallengeTaskTableHelper.COLUMN_ID + " = " + task.getID(), null);
+    }
+
     //returns String[] of all unlocked titles
     public String[] getUnlockedTitles() {
         Cursor dbCursy = DBOnDevice.query(ChallengeTaskTableHelper.CHALL_TABLE_NAME,
@@ -47,10 +65,14 @@ public class ChallengeTaskDataAccessObject {
         dbCursy.moveToFirst();
         String[] arr = new String[dbCursy.getCount()+1];
         int i = 0;
-        while(dbCursy.moveToNext()) {
-            arr[i] = dbCursy.getString(dbCursy.getColumnIndex(ChallengeTaskTableHelper.COLUMN_UNLOCKED));
-            i++;
-        } dbCursy.close();
+        if (arr.length > 1) {
+            do {
+                arr[i] = dbCursy.getString(dbCursy.getColumnIndex(ChallengeTaskTableHelper.COLUMN_UNLOCKED));
+                Log.e("ARR[I]:", arr[i]);
+                i++;
+            } while (dbCursy.moveToNext());
+        }
+        dbCursy.close();
         arr[i] = "the Noodle";
         return arr;
     }
@@ -116,10 +138,10 @@ public class ChallengeTaskDataAccessObject {
                                          null, null, null, null, null, null);
         //iterate over tuples of Posts, adding to our container at each row
         cursor.moveToFirst();
-        while(cursor.moveToNext()) {
+        do {
             ChallengeTask cTask = parseCursorRefAsChallengeTask(cursor);
             tasks.add(cTask);
-        }
+        } while(cursor.moveToNext());
 
         cursor.close();
         return tasks;

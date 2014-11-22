@@ -15,6 +15,7 @@ import android.preference.ListPreference;
 import android.preference.Preference;
 import android.preference.PreferenceFragment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -41,14 +42,18 @@ public class SettingsFragment extends PreferenceFragment {
         ChallengeTaskDataAccessObject cDAO = new ChallengeTaskDataAccessObject(getActivity());
         cDAO.open();
         final String[] unlockedTitlesArray = cDAO.getUnlockedTitles();
+        for (int i = 0; i < unlockedTitlesArray.length; i++) {
+            Log.e("DBG", unlockedTitlesArray[i] + "");
+        }
         lP.setEntries(unlockedTitlesArray);
         cDAO.close();
         lP.setOnPreferenceChangeListener(new Preference.OnPreferenceChangeListener() {
             @Override
             public boolean onPreferenceChange(Preference preference, Object o) {
+                Log.e("BDGBGBD", unlockedTitlesArray[new Integer(o.toString())-1] + "");
                 getActivity().getSharedPreferences("TheSettingsFileYall", 0).edit().putString("pref_key_titlename", unlockedTitlesArray[new Integer(o.toString())-1]).apply();
                 Toast.makeText(getActivity(), "Successfully set title to "
-                                            + getActivity().getSharedPreferences("TheSettingsFileYall", 0).getString("pref_key_titlename", "BOOBZ"),
+                                            + getActivity().getSharedPreferences("TheSettingsFileYall", 0).getString("pref_key_titlename", "?????"),
                                               Toast.LENGTH_SHORT).show();
                 return true;
             }

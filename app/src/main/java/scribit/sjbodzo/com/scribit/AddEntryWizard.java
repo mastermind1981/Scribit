@@ -1,18 +1,26 @@
 package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
+import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageButton;
+import android.widget.Switch;
 import android.widget.Toast;
+
+import java.util.List;
 
 public class AddEntryWizard extends Activity
                             implements DateEntryFragment.OnPostDateChangeListener,
@@ -21,8 +29,10 @@ public class AddEntryWizard extends Activity
     private String date, mediaFilePath;
     private double gpsx, gpsy;
     private EditText titleET, descET;
+    private ChallengeTask theTask;
+    private Switch isChallengeSwitch;
     private Context self;
-    private boolean hazVid, hazImg;
+    private boolean hazVid, hazImg, isForChall;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,6 +40,7 @@ public class AddEntryWizard extends Activity
         setContentView(R.layout.activity_add_entry_wizard);
         gpsx = 0; gpsy = 0;
         hazVid = false; hazImg = false;
+        isForChall = false;
         self = this;
 
         ImageButton calendarIB = (ImageButton) findViewById(R.id.when_ib);
@@ -43,6 +54,50 @@ public class AddEntryWizard extends Activity
 
         titleET = (EditText) findViewById(R.id.title_et);
         descET = (EditText) findViewById(R.id.entryDesc_et);
+
+        isChallengeSwitch = (Switch) findViewById(R.id.ischallenge_switch);
+        isChallengeSwitch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            public void onCheckedChanged(CompoundButton buttonView, final boolean isChecked) {
+                if (isChecked) {
+                    //Set to prompt user with dialog asking which Challenge they're completing
+                    AlertDialog.Builder builder = new AlertDialog.Builder(self);
+                    builder.setTitle("Which Challenge is this for?");
+                    //builder.setMessage("Select the Challenge from the list below."); <- cant set both adapter AND message
+
+                    //fetch Challenge Tasks from sqlite db to pass to adapter
+                    ChallengeTaskDataAccessObject chDAO = new ChallengeTaskDataAccessObject(self);
+                    chDAO.open();
+                    final List<ChallengeTask> list = chDAO.getAllThemThereChallenges();
+                    chDAO.close();
+
+                    DialogInterface.OnClickListener dLI = new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialog, int which) {
+                            Toast.makeText(self, new Integer(which).toString(), Toast.LENGTH_SHORT).show();
+                            theTask = list.get(which);
+                            isForChall = true;
+                        }
+                    };
+                    builder.setAdapter(new ChallengeTaskAdapter(self, list), dLI);
+                    builder.setPositiveButton("Done", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            isForChall = true;
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.setNegativeButton("Never Mind", new DialogInterface.OnClickListener() {
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            isForChall = false;
+                            isChallengeSwitch.setChecked(false);
+                            dialogInterface.dismiss();
+                        }
+                    });
+                    builder.create().show();
+                } else {
+                    //Do nothing here because it is irrelevant.
+                }
+            }
+        });
 
         Button newPostButton = (Button) findViewById(R.id.addEntry_submit_button);
         newPostButton.setOnClickListener(submitEntryListener);
@@ -120,8 +175,16 @@ public class AddEntryWizard extends Activity
                                                  gpsx, gpsy, mediaFilePath, date, hazImg, hazVid);
             DAO.close();
 
-            //Fire off intent to get back to main journal page
-            Intent launchNewEntryIntent = new Intent(self, JournalEntries.class);
+            if (isForChall) {
+                ChallengeTaskDataAccessObject chDAO = new ChallengeTaskDataAccessObject(self);
+                chDAO.open();
+                chDAO.setTaskAsComplete(theTask);
+                chDAO.close();
+                Log.e("SET IT", "Set " + theTask.getTitle() + " is marked as done!");
+            }
+
+            //Fire off intent to get back to Home page
+            Intent launchNewEntryIntent = new Intent(self, Home.class);
             startActivity(launchNewEntryIntent);
         }
     };

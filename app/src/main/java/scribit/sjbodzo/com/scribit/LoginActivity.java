@@ -300,7 +300,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
 
             challTableDAO = new ChallengeTaskDataAccessObject(this);
             challTableDAO.open();
-            challTableDAO.createChallengeTaskEntry("Visit Point West Apt! TEST CHALL", "VISIT IT FORREAL", 50, "VISITOR", "", 29.647083,-82.37345, false, "Other");
+            //challTableDAO.createChallengeTaskEntry("Visit Point West Apt! TEST CHALL", "VISIT IT FORREAL", 50, "VISITOR", "", 29.647083,-82.37345, false, "Other");
             challTableDAO.createChallengeTaskEntry("Rock Climbing", getString(R.string.rockGymChall), 50, "Boulder King", "", 29.645456, -82.3248483, false, "Sports &amp; Rec");
             challTableDAO.createChallengeTaskEntry("Mmm Satchels", getString(R.string.satchelsChall), 35, "Satch <3-er", "", 29.673988, -82.301908, false, "Foodie");
             challTableDAO.createChallengeTaskEntry("No Paynes No Gains", getString(R.string.paynesPrairieChall), 50, "Nature Lover", "", 29.577939, -82.312629, false, "Outdoorsy");

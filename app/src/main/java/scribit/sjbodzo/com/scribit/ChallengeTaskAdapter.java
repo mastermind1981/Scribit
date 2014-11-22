@@ -37,11 +37,11 @@ public class ChallengeTaskAdapter extends ArrayAdapter<ChallengeTask>  {
         //ImageView incompleteIcon = (ImageView) rowView.findViewById(R.id.challTaskadapter_clipboard_inc_iv);
 
         //show icon for whether or not challenge is done yet
-        if (task.getStatus() == 1)
+        if (task.getStatus() == 1) {
+            Log.e("IS IT DONE?!", "YESSssssssss");
             layoutHost.setBackgroundColor(context.getResources().getColor(R.color.challengeCompletedEntryColor));
+        }
         //else incompleteIcon.setVisibility(View.VISIBLE);
-
-        Log.e("POINTS?" , task.getPoints() + "\t");
 
         //set text fields to those of specific challenge
         String pointsy = task.getPoints() + "";

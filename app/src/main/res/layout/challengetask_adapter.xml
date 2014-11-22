@@ -4,6 +4,7 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/rel_layout_chall_task"
     android:paddingTop="10dp"
+    android:layout_marginLeft="8dp"
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
