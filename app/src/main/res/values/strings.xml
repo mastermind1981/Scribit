@@ -36,5 +36,6 @@
     <string name="swRecGymChall">Few campus gyms can rival UF\'s Southwest Rec Center. There is everything from raquetball courts and basketball courts, to a huge weight room, an indoor track, and all the cardio equipment your heart desires. Go break a sweat.</string>
     <string name="title_activity_view_task_entry">ViewTaskEntry</string>
     <string name="title_activity_challenge_tracker_adapter">ChallengeTrackerAdapter</string>
+    <string name="filler">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Duis at dui tincidunt arcu sodales gravida. Curabitur non felis et nibh sodales tempor. In auctor accumsan posuere. Nulla tellus velit, vulputate id varius at, aliquam ac nunc. Praesent sed venenatis eros. Aenean volutpat enim lectus, sit amet ultrices enim scelerisque ut. Duis sodales egestas felis sit amet aliquet. Etiam sit amet tellus nec sem pretium pulvinar. Donec ut mauris pellentesque, gravida diam eu, bibendum turpis. Etiam vitae maximus ligula. Maecenas velit dolor, hendrerit non ultrices rhoncus, vulputate vitae odio. Suspendisse consequat arcu nec fringilla lacinia. Nullam euismod turpis quis posuere consequat.</string>
 
 </resources>

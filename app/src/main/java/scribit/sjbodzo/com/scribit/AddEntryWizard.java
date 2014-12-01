@@ -2,7 +2,6 @@ package scribit.sjbodzo.com.scribit;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.app.Dialog;
 import android.app.DialogFragment;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -145,8 +144,7 @@ public class AddEntryWizard extends Activity
             hasErrors = true;
         }
         if (gpsx == 0 && gpsy == 0) {
-            Toast.makeText(self, "Don't you want to say where you were when this happened?", Toast.LENGTH_SHORT).show();
-            //hasErrors = true;
+            //Current functionality handles this eventuality.
         }
         return hasErrors;
     }
@@ -183,9 +181,8 @@ public class AddEntryWizard extends Activity
                 Log.e("SET IT", "Set " + theTask.getTitle() + " is marked as done!");
             }
 
-            //Fire off intent to get back to Home page
-            Intent launchNewEntryIntent = new Intent(self, Home.class);
-            startActivity(launchNewEntryIntent);
+                    Intent launchNewEntryIntent = new Intent(self, Home.class);
+                    startActivity(launchNewEntryIntent);
         }
     };
 

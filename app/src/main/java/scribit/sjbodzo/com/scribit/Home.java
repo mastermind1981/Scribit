@@ -146,6 +146,11 @@ public class Home extends Activity {
             startActivity(i);
             return true;
         }
+        else if (id == R.id.new_post_entry) {
+            Intent i = new Intent(this, AddEntryWizard.class);
+            startActivity(i);
+            return true;  //direct launch to wizard, skips backstack step on journal entries
+        }
         return super.onOptionsItemSelected(item);
     }
 }

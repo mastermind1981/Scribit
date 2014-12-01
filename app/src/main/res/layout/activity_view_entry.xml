@@ -89,25 +89,33 @@
 
     <!-- TODO: implement location logic here for viewing on post -->
 
-    <TextView
-        android:id="@+id/desc_view_entry_tv"
-        android:textSize="22sp"
-        android:isScrollContainer="true"
+    <ScrollView
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="25dp"
-        android:minLines="11" />
+        android:layout_height="380dp">
+
+        <TextView
+            android:id="@+id/desc_view_entry_tv"
+            android:textSize="22sp"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="25dp"
+            android:minLines="8" />
+
+        </ScrollView>
+
 
     <RelativeLayout
         android:layout_width="fill_parent"
         android:layout_height="wrap_content">
 
+        <!--
         <Button
             android:id="@+id/submit_button_view_entry"
             android:text="Done"
             android:layout_alignParentBottom="true"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content" />
+        -->
 
     </RelativeLayout>
 

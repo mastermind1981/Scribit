@@ -115,11 +115,11 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
     //Method for session state changes in application
     private void onSessionStateChange(Session session, SessionState state, Exception exception) {
         if (state.isOpened()) {
-            Toast.makeText(this, "Logged in!!!!!!", Toast.LENGTH_SHORT);
+            //Toast.makeText(this, "Logged in!!!!!!", Toast.LENGTH_SHORT);
             Intent i = new Intent(this, Home.class);
             startActivity(i);
         } else if (state.isClosed()) {
-            Toast.makeText(this, "Logged out!!!!!!", Toast.LENGTH_SHORT);
+            //Toast.makeText(this, "Logged out!!!!!!", Toast.LENGTH_SHORT);
         }
     }
 
@@ -156,7 +156,7 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
             String msg = "Updated Location: " +
                     Double.toString(l.getLatitude()) + "," +
                     Double.toString(l.getLongitude());
-            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+            //Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
             switch (requestType) {
                 case ADD:
                     geofenceRequestIntent = getTransitionPendingIntent();
@@ -292,10 +292,10 @@ public class LoginActivity extends Activity implements GooglePlayServicesClient.
             postsTableDAO = new PostsDataAccessObject(this); //associate to current Context
             postsTableDAO.open(); //inherited method, sets DB ref
 
-            postsTableDAO.createJournalPost("Foo 1", "insane post bruh", 23.2, 99.42, "", "January 2, 2010", false, false);
-            postsTableDAO.createJournalPost("Foo 2", "insane aehkpost bruh", 200.0, 99.42, "", "February 22, 2010", false, false);
-            postsTableDAO.createJournalPost("Foo 3", "insakjhkhjkhjkhne post bruh", -100, 99.42, "", "December 17, 2010", false, false);
-            postsTableDAO.createJournalPost("Foo 4", "insakjhkjhkjhne post bruh", 33.99, 99.42, "", "November 14, 2010", false, false);
+            postsTableDAO.createJournalPost("Foo 1", getString(R.string.filler), 23.2, 99.42, "", "January 2, 2010", false, false);
+            postsTableDAO.createJournalPost("Foo 2", getString(R.string.filler), 200.0, 99.42, "", "February 22, 2010", false, false);
+            postsTableDAO.createJournalPost("Foo 3", getString(R.string.filler), -100, 99.42, "", "December 17, 2010", false, false);
+            postsTableDAO.createJournalPost("Foo 4", getString(R.string.filler), 33.99, 99.42, "", "November 14, 2010", false, false);
             postsTableDAO.close();
 
             challTableDAO = new ChallengeTaskDataAccessObject(this);
